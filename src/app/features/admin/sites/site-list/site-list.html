@@ -1,0 +1,402 @@
+<div class="site-list">
+
+  <!-- ================================
+       Header
+  ================================= -->
+
+  <div class="site-list__header">
+
+    <div class="site-list__heading">
+
+      <h1>
+        Sites
+      </h1>
+
+      <p>
+        Manage construction sites and their assignments.
+      </p>
+
+    </div>
+
+    <a
+      routerLink="/admin/sites/create"
+      class="site-list__add-button"
+    >
+      <lucide-icon
+        [img]="Plus"
+        [size]="18"
+      />
+
+      <span>
+        Add Site
+      </span>
+    </a>
+
+  </div>
+
+
+  <!-- ================================
+       Toolbar
+  ================================= -->
+
+  <div class="site-list__toolbar">
+
+    <div class="site-list__search">
+
+      <lucide-icon
+        [img]="Search"
+        [size]="18"
+      />
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        placeholder="Search sites..."
+        aria-label="Search sites"
+      />
+
+    </div>
+
+    <div class="site-list__count">
+
+      {{ filteredSites.length }}
+      {{ filteredSites.length === 1 ? 'site' : 'sites' }}
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================
+       Error
+  ================================= -->
+
+  @if (errorMessage) {
+
+    <div class="site-list__error">
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+      <button
+        type="button"
+        (click)="loadSites()"
+      >
+        Try again
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ================================
+       Loading
+  ================================= -->
+
+  @if (isLoading) {
+
+    <div class="site-list__loading">
+
+      <span class="site-list__spinner"></span>
+
+      <span>
+        Loading sites...
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- ================================
+       Table
+  ================================= -->
+
+  @if (!isLoading && !errorMessage) {
+
+    <div class="site-list__table-wrapper">
+
+      <table class="site-list__table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Site
+            </th>
+
+            <th>
+              Location
+            </th>
+
+            <th>
+              Manager
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th class="site-list__actions-header">
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (site of filteredSites; track site.id) {
+
+            <tr>
+
+              <!-- Site -->
+              <td>
+
+                <div class="site-list__site">
+
+                  <div class="site-list__site-icon">
+
+                    <lucide-icon
+                      [img]="MapPin"
+                      [size]="18"
+                    />
+
+                  </div>
+
+                  <div class="site-list__site-info">
+
+                    <strong>
+                      {{ site.name }}
+                    </strong>
+
+                    <span>
+                      {{ site.address }}
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- Location -->
+              <td>
+
+                <span class="site-list__location">
+                  {{ getLocation(site) }}
+                </span>
+
+              </td>
+
+
+              <!-- Manager -->
+              <td>
+
+                @if (site.manager_id !== null) {
+
+                  <span class="site-list__manager">
+                    {{ site.manager_name }}
+                  </span>
+
+                } @else {
+
+                  <span class="site-list__unassigned">
+                    Unassigned
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- Status -->
+              <td>
+
+                @if (site.is_active === 1) {
+
+                  <span class="site-list__status site-list__status--active">
+                    Active
+                  </span>
+
+                } @else {
+
+                  <span class="site-list__status site-list__status--inactive">
+                    Inactive
+                  </span>
+
+                }
+
+              </td>
+
+
+              <!-- Actions -->
+              <td>
+
+                <div class="site-list__actions">
+
+                  <!-- View -->
+                  <button
+                    type="button"
+                    class="site-list__action"
+                    title="View site"
+                    aria-label="View site"
+                    (click)="openViewDialog(site)"
+                  >
+                    <lucide-icon
+                      [img]="Eye"
+                      [size]="17"
+                    />
+                  </button>
+
+
+                  <!-- Edit -->
+                  <button
+                    type="button"
+                    class="site-list__action"
+                    title="Edit site"
+                    aria-label="Edit site"
+                    (click)="openEditDialog(site)"
+                  >
+                    <lucide-icon
+                      [img]="Pencil"
+                      [size]="17"
+                    />
+                  </button>
+
+
+                  <!-- Status -->
+                  <button
+                    type="button"
+                    class="site-list__action"
+                    [class.site-list__action--danger]="site.is_active === 1"
+                    [class.site-list__action--success]="site.is_active === 0"
+                    [title]="site.is_active === 1
+                      ? 'Deactivate site'
+                      : 'Restore site'"
+                    [attr.aria-label]="site.is_active === 1
+                      ? 'Deactivate site'
+                      : 'Restore site'"
+                    (click)="openStatusDialog(site)"
+                  >
+
+                    @if (site.is_active === 1) {
+
+                      <lucide-icon
+                        [img]="UserX"
+                        [size]="17"
+                      />
+
+                    } @else {
+
+                      <lucide-icon
+                        [img]="UserCheck"
+                        [size]="17"
+                      />
+
+                    }
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          } @empty {
+
+            <tr>
+
+              <td
+                colspan="5"
+                class="site-list__empty"
+              >
+
+                <div class="site-list__empty-content">
+
+                  <lucide-icon
+                    [img]="MapPin"
+                    [size]="32"
+                  />
+
+                  <strong>
+                    No sites found
+                  </strong>
+
+                  @if (searchTerm) {
+
+                    <span>
+                      Try changing your search.
+                    </span>
+
+                  } @else {
+
+                    <span>
+                      Create your first site to get started.
+                    </span>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+
+  <!-- ================================
+       View Dialog
+  ================================= -->
+
+  @if (showViewDialog && selectedSite) {
+
+    <app-site-view-dialog
+      [site]="selectedSite"
+      (closed)="closeViewDialog()"
+    />
+
+  }
+
+
+  <!-- ================================
+       Status Dialog
+  ================================= -->
+
+  @if (showStatusDialog && selectedSite) {
+
+    <app-site-status-dialog
+      [site]="selectedSite"
+      (closed)="closeStatusDialog()"
+      (changed)="onSiteStatusChanged()"
+    />
+
+  }
+
+  @if (showEditDialog && selectedSite) {
+
+    <app-site-edit-dialog
+      [site]="selectedSite"
+      (closed)="closeEditDialog()"
+      (saved)="onSiteSaved($event)"
+    />
+
+  }
+
+</div>

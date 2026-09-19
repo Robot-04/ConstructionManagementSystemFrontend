@@ -1,0 +1,450 @@
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mixins;
+
+.dashboard {
+  width: 100%;
+
+  // ========================================
+  // Welcome
+  // ========================================
+
+  &__welcome {
+    @include mixins.flex-between;
+
+    gap: 24px;
+
+    margin-bottom: 28px;
+  }
+
+  &__eyebrow {
+    margin-bottom: 6px;
+
+    color: var(--color-primary);
+
+    font-size: vars.$font-size-xs;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+  }
+
+  &__welcome h1 {
+    margin-bottom: 6px;
+
+    color: var(--text-primary);
+
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  &__description {
+    color: var(--text-secondary);
+
+    font-size: vars.$font-size-sm;
+  }
+
+  &__date {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 4px;
+
+    span {
+      color: var(--text-muted);
+
+      font-size: vars.$font-size-xs;
+    }
+
+    strong {
+      color: var(--text-primary);
+
+      font-size: vars.$font-size-sm;
+    }
+  }
+
+
+  // ========================================
+  // Statistics
+  // ========================================
+
+  &__stats {
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+  }
+
+
+  // ========================================
+  // Main Grid
+  // ========================================
+
+  &__grid {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 2fr)
+      minmax(280px, 1fr);
+
+    gap: 20px;
+  }
+}
+
+
+// ==========================================
+// Statistic Card
+// ==========================================
+
+.stat-card {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 20px;
+
+  background: var(--surface-primary);
+
+  border: 1px solid var(--border-primary);
+
+  border-radius: vars.$radius-lg;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform vars.$transition-fast,
+    box-shadow vars.$transition-fast,
+    background-color vars.$transition-normal;
+
+  &:hover {
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-md);
+  }
+
+
+  &__icon {
+    @include mixins.flex-center;
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    border-radius: vars.$radius-md;
+
+    background: var(--color-primary-light);
+
+    color: var(--color-primary);
+
+    font-size: vars.$font-size-xs;
+    font-weight: 700;
+  }
+
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    span {
+      color: var(--text-muted);
+
+      font-size: vars.$font-size-xs;
+    }
+
+    strong {
+      color: var(--text-primary);
+
+      font-size: 24px;
+      line-height: 1;
+    }
+  }
+
+
+  &--warning {
+    .stat-card__icon {
+      background: color-mix(
+        in srgb,
+        var(--color-warning) 12%,
+        transparent
+      );
+
+      color: var(--color-warning);
+    }
+  }
+}
+
+
+// ==========================================
+// Dashboard Card
+// ==========================================
+
+.dashboard-card {
+  padding: 20px;
+
+  background: var(--surface-primary);
+
+  border: 1px solid var(--border-primary);
+
+  border-radius: vars.$radius-lg;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    background-color vars.$transition-normal,
+    border-color vars.$transition-normal;
+
+
+  &__header {
+    @include mixins.flex-between;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+    h2 {
+      margin-bottom: 4px;
+
+      color: var(--text-primary);
+
+      font-size: vars.$font-size-md;
+      font-weight: 700;
+    }
+
+    p {
+      color: var(--text-muted);
+
+      font-size: vars.$font-size-xs;
+    }
+
+    a {
+      color: var(--color-primary);
+
+      font-size: vars.$font-size-xs;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+
+// ==========================================
+// Orders Table
+// ==========================================
+
+.orders-table {
+  width: 100%;
+
+  &__row {
+    display: grid;
+
+    grid-template-columns:
+      0.8fr
+      1.3fr
+      1fr
+      0.9fr;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid var(--border-primary);
+
+    color: var(--text-secondary);
+
+    font-size: vars.$font-size-sm;
+
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+
+    &--header {
+      padding-top: 0;
+
+      color: var(--text-muted);
+
+      font-size: vars.$font-size-xs;
+      font-weight: 600;
+    }
+  }
+}
+
+
+// ==========================================
+// Status
+// ==========================================
+
+.status {
+  display: inline-flex;
+
+  width: fit-content;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+
+  &--pending {
+    background: color-mix(
+      in srgb,
+      var(--color-warning) 12%,
+      transparent
+    );
+
+    color: var(--color-warning);
+  }
+
+
+  &--approved {
+    background: color-mix(
+      in srgb,
+      var(--color-success) 12%,
+      transparent
+    );
+
+    color: var(--color-success);
+  }
+
+
+  &--rejected {
+    background: color-mix(
+      in srgb,
+      var(--color-danger) 12%,
+      transparent
+    );
+
+    color: var(--color-danger);
+  }
+}
+
+
+// ==========================================
+// Order Overview
+// ==========================================
+
+.order-overview {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid var(--border-primary);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+
+    strong {
+      color: var(--text-primary);
+
+      font-size: vars.$font-size-lg;
+    }
+  }
+
+
+  &__label {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    color: var(--text-secondary);
+
+    font-size: vars.$font-size-sm;
+  }
+}
+
+
+// ==========================================
+// Status Dot
+// ==========================================
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+
+  &--pending {
+    background: var(--color-warning);
+  }
+
+  &--approved {
+    background: var(--color-success);
+  }
+
+  &--rejected {
+    background: var(--color-danger);
+  }
+}
+
+
+// ==========================================
+// Responsive
+// ==========================================
+
+@include mixins.respond-to(lg) {
+  .dashboard {
+    &__stats {
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+
+@media (max-width: 767px) {
+  .dashboard {
+    &__welcome {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    &__date {
+      align-items: flex-start;
+    }
+
+    &__stats {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .orders-table {
+    overflow-x: auto;
+
+    &__row {
+      min-width: 600px;
+    }
+  }
+}

@@ -1,0 +1,395 @@
+.site-status-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--modal-backdrop);
+  backdrop-filter: blur(4px);
+
+  animation: site-status-backdrop-in 160ms ease-out;
+}
+
+.site-status-dialog {
+  width: 100%;
+  max-width: 500px;
+
+  background: var(--surface-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-md);
+
+  overflow: hidden;
+
+  animation: site-status-dialog-in 180ms ease-out;
+}
+
+
+/* ================================
+   Header
+================================ */
+
+.site-status-dialog__header {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 22px 24px;
+
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.site-status-dialog__icon {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  color: var(--color-danger);
+  background: rgb(220 38 38 / 10%);
+}
+
+.site-status-dialog__icon--restore {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.site-status-dialog__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.site-status-dialog__heading h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.site-status-dialog__heading p {
+  margin: 4px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.site-status-dialog__close {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 8px;
+
+  color: var(--text-muted);
+  background: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.site-status-dialog__close:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+.site-status-dialog__close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ================================
+   Body
+================================ */
+
+.site-status-dialog__body {
+  padding: 24px;
+}
+
+.site-status-dialog__description {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+
+/* ================================
+   Warning
+================================ */
+
+.site-status-dialog__warning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-top: 18px;
+  padding: 14px;
+
+  border: 1px solid rgb(217 119 6 / 25%);
+  border-radius: 10px;
+
+  background: rgb(217 119 6 / 8%);
+}
+
+.site-status-dialog__warning-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: var(--color-warning);
+}
+
+.site-status-dialog__warning-content {
+  min-width: 0;
+}
+
+.site-status-dialog__warning-content strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--text-primary);
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.site-status-dialog__warning-content p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+
+/* ================================
+   Error
+================================ */
+
+.site-status-dialog__error {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-top: 16px;
+  padding: 12px 14px;
+
+  border: 1px solid var(--modal-error-border);
+  border-radius: 9px;
+
+  color: var(--color-danger);
+  background: var(--modal-error-bg);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.site-status-dialog__error lucide-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+
+/* ================================
+   Footer
+================================ */
+
+.site-status-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 16px 24px;
+
+  border-top: 1px solid var(--border-primary);
+
+  background: var(--surface-secondary);
+}
+
+.site-status-dialog__button {
+  min-height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 16px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
+}
+
+.site-status-dialog__button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* Cancel */
+
+.site-status-dialog__button--cancel {
+  color: var(--text-secondary);
+
+  background: var(--surface-primary);
+  border-color: var(--border-secondary);
+}
+
+.site-status-dialog__button--cancel:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+
+/* Danger */
+
+.site-status-dialog__button--danger {
+  color: #ffffff;
+  background: var(--color-danger);
+}
+
+.site-status-dialog__button--danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+
+/* Primary */
+
+.site-status-dialog__button--primary {
+  color: #ffffff;
+  background: var(--color-primary);
+}
+
+.site-status-dialog__button--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+
+/* ================================
+   Loading Spinner
+================================ */
+
+.site-status-dialog__spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgb(255 255 255 / 40%);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: site-status-spin 700ms linear infinite;
+}
+
+
+/* ================================
+   Animations
+================================ */
+
+@keyframes site-status-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes site-status-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes site-status-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 600px) {
+  .site-status-dialog__backdrop {
+    padding: 16px;
+  }
+
+  .site-status-dialog__header {
+    padding: 18px;
+  }
+
+  .site-status-dialog__body {
+    padding: 20px 18px;
+  }
+
+  .site-status-dialog__footer {
+    padding: 14px 18px;
+  }
+
+  .site-status-dialog__button {
+    flex: 1;
+  }
+}

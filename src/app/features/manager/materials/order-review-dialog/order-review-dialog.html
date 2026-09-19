@@ -1,0 +1,185 @@
+<div
+  class="order-review-dialog__backdrop"
+  (click)="close()"
+>
+  <div
+    class="order-review-dialog"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <header class="order-review-dialog__header">
+      <div class="order-review-dialog__title">
+        <div class="order-review-dialog__title-icon">
+          <lucide-icon
+            [img]="ShoppingCart"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2>Review Order</h2>
+          <span>Review selected materials before placing the order</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="order-review-dialog__close"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <div class="order-review-dialog__content">
+
+      <!-- Summary -->
+      <div class="order-review-dialog__summary">
+        <div>
+          <span class="order-review-dialog__summary-label">
+            Selected Materials
+          </span>
+
+          <strong>
+            {{ items.length }}
+          </strong>
+        </div>
+
+        <div>
+          <span class="order-review-dialog__summary-label">
+            Total Quantity
+          </span>
+
+          <strong>
+            {{ getTotalQuantity() }}
+          </strong>
+        </div>
+      </div>
+
+      <!-- Materials -->
+      <section class="order-review-dialog__section">
+
+        <div class="order-review-dialog__section-title">
+          <lucide-icon
+            [img]="Package"
+            [size]="16"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Materials</span>
+        </div>
+
+        @if (items.length > 0) {
+
+          <div class="order-review-dialog__items">
+
+            @for (item of items; track item.material.id) {
+
+              <div class="order-review-dialog__item">
+
+                <div class="order-review-dialog__item-icon">
+                  <lucide-icon
+                    [img]="Package"
+                    [size]="17"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+                </div>
+
+                <div class="order-review-dialog__item-info">
+
+                  <strong>
+                    {{ item.material.name }}
+                  </strong>
+
+                  <span>
+                    Material #{{ item.material.id }}
+                  </span>
+
+                </div>
+
+                <div class="order-review-dialog__quantity">
+
+                  <strong>
+                    {{ item.quantity }}
+                  </strong>
+
+                  <span>
+                    {{ item.material.unit }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="order-review-dialog__empty">
+            No materials selected.
+          </div>
+
+        }
+
+      </section>
+
+      <!-- API Error -->
+      @if (errorMessage) {
+
+        <div class="order-review-dialog__error">
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="order-review-dialog__footer">
+
+      <button
+        type="button"
+        class="order-review-dialog__cancel"
+        [disabled]="isSaving"
+        (click)="close()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="order-review-dialog__confirm"
+        [disabled]="isSaving || items.length === 0"
+        (click)="confirm()"
+      >
+        @if (isSaving) {
+          <span>Placing Order...</span>
+        } @else {
+          <lucide-icon
+            [img]="ShoppingCart"
+            [size]="15"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Place Order</span>
+        }
+      </button>
+
+    </footer>
+
+  </div>
+</div>

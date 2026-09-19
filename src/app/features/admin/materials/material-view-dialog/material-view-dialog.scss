@@ -1,0 +1,329 @@
+.material-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--modal-backdrop);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(7px);
+  animation: material-backdrop-in 0.18s ease-out;
+}
+
+
+.material-dialog {
+  width: min(520px, 100%);
+  max-height: calc(100vh - 48px);
+
+  overflow: auto;
+
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+
+  background: var(--surface-primary);
+  box-shadow: var(--shadow-lg);
+
+  animation: material-dialog-in 0.2s ease-out;
+}
+
+
+// ======================================================
+// Header
+// ======================================================
+
+.material-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid var(--color-border);
+
+  h2 {
+    margin: 0;
+
+    color: var(--color-text-primary);
+
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 4px 0 0;
+
+    color: var(--color-text-muted);
+
+    font-size: 12px;
+  }
+}
+
+
+.material-dialog__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--color-text-muted);
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-border);
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+  }
+}
+
+
+// ======================================================
+// Profile
+// ======================================================
+
+.material-dialog__profile {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 22px;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+
+.material-dialog__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+
+.material-dialog__profile {
+
+  h3 {
+    margin: 0;
+
+    color: var(--color-text-primary);
+
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--color-text-muted);
+
+    font-size: 12px;
+  }
+}
+
+
+// ======================================================
+// Details
+// ======================================================
+
+.material-dialog__details {
+  padding: 8px 22px;
+}
+
+
+.material-dialog__item {
+  display: grid;
+
+  grid-template-columns: 130px 1fr;
+
+  gap: 20px;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid var(--color-border);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+
+.material-dialog__label {
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+.material-dialog__value {
+  min-width: 0;
+
+  color: var(--color-text-primary);
+
+  font-size: 13px;
+  font-weight: 500;
+
+  word-break: break-word;
+}
+
+
+// ======================================================
+// Status
+// ======================================================
+
+.status {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  &--active {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+  }
+
+  &--inactive {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+  }
+}
+
+
+// ======================================================
+// Footer
+// ======================================================
+
+.material-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 16px 22px;
+
+  border-top: 1px solid var(--color-border);
+}
+
+
+.material-dialog__close-button {
+  min-height: 38px;
+
+  padding: 0 16px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+  }
+}
+
+
+// ======================================================
+// Animation
+// ======================================================
+
+@keyframes material-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes material-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+// ======================================================
+// Responsive
+// ======================================================
+
+@media (max-width: 600px) {
+
+  .material-dialog-backdrop {
+    align-items: flex-end;
+
+    padding: 12px;
+  }
+
+  .material-dialog {
+    max-height: calc(100vh - 24px);
+
+    border-radius: 14px;
+  }
+
+  .material-dialog__item {
+    grid-template-columns: 1fr;
+
+    gap: 5px;
+  }
+
+}

@@ -1,0 +1,268 @@
+<div class="site-form">
+
+  <section class="site-form__card">
+
+    <!-- Header -->
+    <div class="site-form__header">
+
+      <button
+        type="button"
+        class="site-form__back"
+        (click)="goBack()"
+        [disabled]="isSaving"
+        aria-label="Back to sites"
+      >
+        <lucide-icon
+          [img]="ArrowLeft"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>
+          Back to Sites
+        </span>
+      </button>
+
+      <div class="site-form__title">
+
+        <div class="site-form__icon">
+          <lucide-icon
+            [img]="MapPin"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2>
+            {{ isEditMode ? 'Edit Site' : 'Create Site' }}
+          </h2>
+
+          <p>
+            {{
+              isEditMode
+                ? 'Update construction site details.'
+                : 'Add a new construction site to the system.'
+            }}
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Error -->
+    @if (errorMessage) {
+
+      <div class="site-form__error">
+        {{ errorMessage }}
+      </div>
+
+    }
+
+    <!-- Loading -->
+    @if (isLoading) {
+
+      <div class="site-form__loading">
+
+        <span class="loading-spinner"></span>
+
+        <span>
+          Loading site...
+        </span>
+
+      </div>
+
+    }
+
+    <!-- Form -->
+    <form
+      [formGroup]="siteForm"
+      (ngSubmit)="onSubmit()"
+      class="site-form__body"
+    >
+
+      <!-- Site Name -->
+      <div class="form-field">
+
+        <label for="name">
+          Site Name
+          <span>*</span>
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter site name"
+          autocomplete="off"
+        />
+
+        @if (isInvalid('name')) {
+
+          <small>
+
+            @if (
+              siteForm.controls.name.errors?.['required']
+            ) {
+              Site name is required.
+            }
+
+            @if (
+              siteForm.controls.name.errors?.['minlength']
+            ) {
+              Site name must be at least 2 characters.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+      <!-- Address -->
+      <div class="form-field">
+
+        <label for="address">
+          Address
+          <span>*</span>
+        </label>
+
+        <textarea
+          id="address"
+          formControlName="address"
+          placeholder="Enter complete site address"
+          rows="3"
+        ></textarea>
+
+        @if (isInvalid('address')) {
+
+          <small>
+
+            @if (
+              siteForm.controls.address.errors?.['required']
+            ) {
+              Address is required.
+            }
+
+            @if (
+              siteForm.controls.address.errors?.['minlength']
+            ) {
+              Address must be at least 5 characters.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+      <!-- City / State -->
+      <div class="site-form__row">
+
+        <!-- City -->
+        <div class="form-field">
+
+          <label for="city">
+            City
+          </label>
+
+          <input
+            id="city"
+            type="text"
+            formControlName="city"
+            placeholder="Enter city"
+            autocomplete="address-level2"
+          />
+
+        </div>
+
+        <!-- State -->
+        <div class="form-field">
+
+          <label for="state">
+            State
+          </label>
+
+          <input
+            id="state"
+            type="text"
+            formControlName="state"
+            placeholder="Enter state"
+            autocomplete="address-level1"
+          />
+
+        </div>
+
+      </div>
+
+      <!-- Pincode -->
+      <div class="form-field">
+
+        <label for="pincode">
+          Pincode
+        </label>
+
+        <input
+          id="pincode"
+          type="text"
+          formControlName="pincode"
+          placeholder="395003"
+          maxlength="6"
+          inputmode="numeric"
+          autocomplete="postal-code"
+        />
+
+        @if (isInvalid('pincode')) {
+
+          <small>
+            Enter a valid 6-digit pincode.
+          </small>
+
+        }
+
+      </div>
+
+      <!-- Actions -->
+      <div class="site-form__actions">
+
+        <button
+          type="button"
+          class="site-form__cancel"
+          (click)="goBack()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="site-form__submit"
+          [disabled]="isSaving || isLoading"
+        >
+
+          @if (isSaving) {
+
+            <span class="button-spinner"></span>
+
+            <span>
+              {{ isEditMode ? 'Updating...' : 'Creating...' }}
+            </span>
+
+          } @else {
+
+            <span>
+              {{ isEditMode ? 'Update Site' : 'Create Site' }}
+            </span>
+
+          }
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</div>

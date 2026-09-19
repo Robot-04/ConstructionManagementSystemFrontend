@@ -1,0 +1,394 @@
+<div class="orders">
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="orders__state">
+      <lucide-icon
+        [img]="RefreshCw"
+        [size]="22"
+        [strokeWidth]="1.8"
+        class="orders__state-icon orders__state-icon--loading"
+      ></lucide-icon>
+
+      <span>Loading orders...</span>
+    </div>
+  }
+
+  <!-- Error -->
+  @else if (errorMessage) {
+    <div class="orders__state orders__state--error">
+
+      <lucide-icon
+        [img]="TriangleAlert"
+        [size]="22"
+        [strokeWidth]="1.8"
+      ></lucide-icon>
+
+      <span>{{ errorMessage }}</span>
+
+      <button
+        type="button"
+        class="orders__retry"
+        (click)="retry()"
+      >
+        <lucide-icon
+          [img]="RefreshCw"
+          [size]="15"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Try Again</span>
+      </button>
+
+    </div>
+  }
+
+  <!-- Orders -->
+  @else {
+
+    <section class="orders__card">
+
+      <!-- Filters -->
+      <div class="orders__filters">
+
+        <button
+          type="button"
+          class="orders__filter"
+          [class.orders__filter--active]="selectedStatus === 'ALL'"
+          (click)="selectStatus('ALL')"
+        >
+          <span>All</span>
+          <strong>{{ getStatusCount('ALL') }}</strong>
+        </button>
+
+        <button
+          type="button"
+          class="orders__filter"
+          [class.orders__filter--active]="selectedStatus === 'PENDING'"
+          (click)="selectStatus('PENDING')"
+        >
+          <lucide-icon
+            [img]="Clock3"
+            [size]="14"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Pending</span>
+          <strong>{{ getStatusCount('PENDING') }}</strong>
+        </button>
+
+        <button
+          type="button"
+          class="orders__filter"
+          [class.orders__filter--active]="selectedStatus === 'APPROVED'"
+          (click)="selectStatus('APPROVED')"
+        >
+          <lucide-icon
+            [img]="CheckCircle2"
+            [size]="14"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Approved</span>
+          <strong>{{ getStatusCount('APPROVED') }}</strong>
+        </button>
+
+        <button
+          type="button"
+          class="orders__filter"
+          [class.orders__filter--active]="selectedStatus === 'REJECTED'"
+          (click)="selectStatus('REJECTED')"
+        >
+          <lucide-icon
+            [img]="XCircle"
+            [size]="14"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Rejected</span>
+          <strong>{{ getStatusCount('REJECTED') }}</strong>
+        </button>
+
+        <div class="orders__toolbar-right">
+
+          <span class="orders__count">
+            {{ filteredOrders.length }}
+            {{ filteredOrders.length === 1 ? 'Order' : 'Orders' }}
+          </span>
+
+          <button
+            type="button"
+            class="orders__refresh"
+            title="Refresh orders"
+            (click)="loadOrders()"
+          >
+            <lucide-icon
+              [img]="RefreshCw"
+              [size]="16"
+              [strokeWidth]="1.8"
+            ></lucide-icon>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Table -->
+      @if (filteredOrders.length > 0) {
+
+        <div class="orders__table-wrapper">
+
+          <div class="orders__table">
+
+            <!-- Header -->
+            <div class="orders__row orders__row--header">
+
+              <div class="orders__cell">
+                Order
+              </div>
+
+              <div class="orders__cell">
+                Manager
+              </div>
+
+              <div class="orders__cell">
+                Site
+              </div>
+
+              <div class="orders__cell">
+                Status
+              </div>
+
+              <div class="orders__cell">
+                Created
+              </div>
+
+              <div class="orders__cell orders__cell--actions">
+                Actions
+              </div>
+
+            </div>
+
+            <!-- Rows -->
+            @for (order of filteredOrders; track order.id) {
+
+              <div class="orders__row">
+
+                <!-- Order -->
+                <div class="orders__cell orders__cell--order">
+
+                  <div class="orders__order-icon">
+                    <lucide-icon
+                      [img]="ClipboardList"
+                      [size]="17"
+                      [strokeWidth]="1.8"
+                    ></lucide-icon>
+                  </div>
+
+                  <div class="orders__order-info">
+
+                    <strong>
+                      Order #{{ order.id }}
+                    </strong>
+
+                    <span>
+                      Material Order
+                    </span>
+
+                  </div>
+
+                </div>
+
+                <!-- Manager -->
+                <div class="orders__cell orders__cell--manager">
+
+                  <strong>
+                    {{ order.manager.name }}
+                  </strong>
+
+                  <span>
+                    Manager #{{ order.manager.id }}
+                  </span>
+
+                </div>
+
+                <!-- Site -->
+                <div class="orders__cell orders__cell--site">
+
+                  <strong>
+                    {{ order.site.name }}
+                  </strong>
+
+                  <span>
+                    Site #{{ order.site.id }}
+                  </span>
+
+                </div>
+
+                <!-- Status -->
+                <div class="orders__cell">
+
+                  <span
+                    class="orders__status"
+                    [class.orders__status--pending]="order.status === 'PENDING'"
+                    [class.orders__status--approved]="order.status === 'APPROVED'"
+                    [class.orders__status--rejected]="order.status === 'REJECTED'"
+                  >
+
+                    <lucide-icon
+                      [img]="getStatusIcon(order.status)"
+                      [size]="13"
+                      [strokeWidth]="2"
+                    ></lucide-icon>
+
+                    <span>
+                      {{ order.status }}
+                    </span>
+
+                  </span>
+
+                </div>
+
+                <!-- Created -->
+                <div class="orders__cell orders__cell--date">
+
+                  <span>
+                    {{ order.created_at | date:'mediumDate' }}
+                  </span>
+
+                </div>
+
+                <!-- Actions -->
+                <div class="orders__cell orders__cell--actions">
+
+                  <button
+                    type="button"
+                    class="orders__action"
+                    title="View order"
+                    (click)="viewOrder(order)"
+                  >
+                    <lucide-icon
+                      [img]="Eye"
+                      [size]="15"
+                      [strokeWidth]="1.8"
+                    ></lucide-icon>
+
+                    <span>View</span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+      }
+
+      <!-- Empty -->
+      @else {
+
+        <div class="orders__empty">
+
+          <div class="orders__empty-icon">
+            <lucide-icon
+              [img]="ClipboardList"
+              [size]="24"
+              [strokeWidth]="1.6"
+            ></lucide-icon>
+          </div>
+
+          @if (selectedStatus === 'ALL') {
+
+            <h2>No orders found</h2>
+
+            <p>
+              There are no material orders yet.
+            </p>
+
+          } @else {
+
+            <h2>
+              No {{ selectedStatus.toLowerCase() }} orders
+            </h2>
+
+            <p>
+              There are no orders with this status.
+            </p>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+    @if (isViewDialogOpen) {
+
+      @if (isOrderLoading) {
+
+        <div class="orders__dialog-loading">
+
+          <lucide-icon
+            [img]="RefreshCw"
+            [size]="22"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Loading order details...</span>
+
+        </div>
+
+      } @else if (orderErrorMessage) {
+
+        <div class="orders__dialog-error">
+
+          <lucide-icon
+            [img]="TriangleAlert"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>{{ orderErrorMessage }}</span>
+
+          <button
+            type="button"
+            (click)="closeViewDialog()"
+          >
+            Close
+          </button>
+
+        </div>
+
+      } @else if (selectedOrder) {
+
+        <app-admin-order-view-dialog
+          [order]="selectedOrder"
+          [isActionLoading]="isActionLoading"
+          [errorMessage]="orderActionError"
+          (closed)="closeViewDialog()"
+          (approve)="approveOrder()"
+          (reject)="openRejectDialog()"
+        ></app-admin-order-view-dialog>
+
+        @if (isRejectDialogOpen) {
+          <app-order-reject-dialog
+            [isSaving]="isRejectingOrder"
+            [errorMessage]="rejectErrorMessage"
+            (closed)="closeRejectDialog()"
+            (confirmed)="rejectOrder($event)"
+          ></app-order-reject-dialog>
+        }
+
+      }
+
+
+    }
+
+  }
+
+</div>

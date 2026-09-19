@@ -1,0 +1,146 @@
+<div
+  class="material-dialog-backdrop"
+  (click)="close()"
+>
+  <div
+    class="material-dialog"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div class="material-dialog__header">
+
+      <div>
+        <h2>Material Details</h2>
+
+        <p>
+          Material #{{ material.id }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="material-dialog__close"
+        (click)="close()"
+        aria-label="Close dialog"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="19"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </div>
+
+
+    <!-- Profile -->
+    <div class="material-dialog__profile">
+
+      <div class="material-dialog__icon">
+        <lucide-icon
+          [img]="Package"
+          [size]="22"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </div>
+
+      <div>
+        <h3>
+          {{ material.name }}
+        </h3>
+
+        <span>
+          Material #{{ material.id }}
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- Details -->
+    <div class="material-dialog__details">
+
+      <!-- Name -->
+      <div class="material-dialog__item">
+
+        <span class="material-dialog__label">
+          Material
+        </span>
+
+        <span class="material-dialog__value">
+          {{ material.name }}
+        </span>
+
+      </div>
+
+
+      <!-- Unit -->
+      <div class="material-dialog__item">
+
+        <span class="material-dialog__label">
+          Unit
+        </span>
+
+        <span class="material-dialog__value">
+          {{ material.unit }}
+        </span>
+
+      </div>
+
+
+      <!-- Description -->
+      <div class="material-dialog__item">
+
+        <span class="material-dialog__label">
+          Description
+        </span>
+
+        <span class="material-dialog__value">
+          {{ material.description || 'Not provided' }}
+        </span>
+
+      </div>
+
+
+      <!-- Status -->
+      <div class="material-dialog__item">
+
+        <span class="material-dialog__label">
+          Status
+        </span>
+
+        @if (material.is_active === 1) {
+
+          <span class="status status--active">
+            Active
+          </span>
+
+        } @else {
+
+          <span class="status status--inactive">
+            Inactive
+          </span>
+
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- Footer -->
+    <div class="material-dialog__footer">
+
+      <button
+        type="button"
+        class="material-dialog__close-button"
+        (click)="close()"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+</div>

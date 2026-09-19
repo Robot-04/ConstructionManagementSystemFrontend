@@ -1,0 +1,172 @@
+<div
+  class="site-view-dialog__backdrop"
+  (click)="onBackdropClick($event)"
+>
+  <section
+    class="site-view-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="site-view-title"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div class="site-view-dialog__header">
+
+      <div class="site-view-dialog__title">
+
+        <div class="site-view-dialog__icon">
+          <lucide-icon
+            [img]="MapPin"
+            [size]="21"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2 id="site-view-title">
+            Site Details
+          </h2>
+
+          <p>
+            Site #{{ site.id }}
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="site-view-dialog__close"
+        (click)="closeDialog()"
+        aria-label="Close dialog"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="19"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </div>
+
+    <!-- Site Profile -->
+    <div class="site-view-dialog__profile">
+
+      <div class="site-view-dialog__avatar">
+        {{ site.name.charAt(0).toUpperCase() }}
+      </div>
+
+      <div>
+        <h3>
+          {{ site.name }}
+        </h3>
+
+        <span>
+          Site #{{ site.id }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Details -->
+    <div class="site-view-dialog__details">
+
+      <!-- Address -->
+      <div class="site-view-dialog__item">
+
+        <span class="site-view-dialog__label">
+          Address
+        </span>
+
+        <span class="site-view-dialog__value">
+          {{ site.address || 'Address not provided' }}
+        </span>
+
+      </div>
+
+      <!-- Location -->
+      <div class="site-view-dialog__item">
+
+        <span class="site-view-dialog__label">
+          Location
+        </span>
+
+        <span class="site-view-dialog__value">
+          {{ getLocation() }}
+        </span>
+
+      </div>
+
+      <!-- Pincode -->
+      <div class="site-view-dialog__item">
+
+        <span class="site-view-dialog__label">
+          Pincode
+        </span>
+
+        <span class="site-view-dialog__value">
+          {{ site.pincode || 'Not provided' }}
+        </span>
+
+      </div>
+
+      <!-- Manager -->
+      <div class="site-view-dialog__item">
+
+        <span class="site-view-dialog__label">
+          Manager
+        </span>
+
+        <span class="site-view-dialog__value">
+
+          @if (site.manager_id) {
+            {{ site.manager_name }}
+          } @else {
+            Not assigned
+          }
+
+        </span>
+
+      </div>
+
+      <!-- Status -->
+      <div class="site-view-dialog__item">
+
+        <span class="site-view-dialog__label">
+          Status
+        </span>
+
+        @if (site.is_active === 1) {
+
+          <span class="status status--active">
+            Active
+          </span>
+
+        } @else {
+
+          <span class="status status--inactive">
+            Inactive
+          </span>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="site-view-dialog__footer">
+
+      <button
+        type="button"
+        class="site-view-dialog__close-button"
+        (click)="closeDialog()"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </section>
+</div>

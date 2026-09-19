@@ -1,0 +1,281 @@
+<div class="dashboard">
+
+  @if (isLoading) {
+
+    <div class="dashboard__loading">
+      <div class="loading-spinner"></div>
+      <span>Loading dashboard...</span>
+    </div>
+
+  } @else if (errorMessage) {
+
+    <div class="dashboard__error">
+      {{ errorMessage }}
+    </div>
+
+  } @else if (dashboard) {
+
+    <!-- Welcome -->
+    <!-- <section class="dashboard__welcome">
+
+      <div>
+        <p class="dashboard__eyebrow">
+          ADMINISTRATION
+        </p>
+
+        <h1>
+          Dashboard
+        </h1>
+
+        <p class="dashboard__description">
+          Overview of your construction management system.
+        </p>
+      </div>
+
+    </section> -->
+
+
+    <!-- Statistics -->
+    <section class="dashboard__stats">
+
+      <article class="stat-card">
+
+        <div class="stat-card__icon">
+         <lucide-icon
+            [img]="Users"
+            [size]="24"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div class="stat-card__content">
+          <span>Managers</span>
+          <strong>
+            {{ dashboard.totalManagers }}
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-card__icon">
+          <lucide-icon
+            [img]="Building2"
+            [size]="24"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div class="stat-card__content">
+          <span>Sites</span>
+          <strong>
+            {{ dashboard.totalSites }}
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-card__icon">
+          <lucide-icon
+            [img]="Package"
+            [size]="24"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div class="stat-card__content">
+          <span>Materials</span>
+          <strong>
+            {{ dashboard.totalMaterials }}
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-card__icon">
+          <lucide-icon
+            [img]="ClipboardList"
+            [size]="24"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div class="stat-card__content">
+          <span>Total Orders</span>
+          <strong>
+            {{ dashboard.totalOrders }}
+          </strong>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- Dashboard Grid -->
+    <section class="dashboard__grid">
+
+      <!-- Recent Orders -->
+      <article class="dashboard-card dashboard-card--orders">
+
+        <div class="dashboard-card__header">
+
+          <div>
+            <h2>Recent Orders</h2>
+
+            <p>
+              Latest material requests from managers.
+            </p>
+          </div>
+
+          <a routerLink="/admin/orders">
+            View all
+          </a>
+
+        </div>
+
+
+        <div class="orders-table">
+
+          <div class="orders-table__row orders-table__row--header">
+            <span>Order</span>
+            <span>Manager</span>
+            <span>Site</span>
+            <span>Status</span>
+          </div>
+
+
+          @for (
+            order of dashboard.recentOrders;
+            track order.id
+          ) {
+
+            <div class="orders-table__row">
+
+              <span>
+                #{{ order.id }}
+              </span>
+
+              <span>
+                {{ order.manager_name }}
+              </span>
+
+              <span>
+                {{ order.site_name }}
+              </span>
+
+              <span
+                class="status"
+                [class.status--pending]="order.status === 'PENDING'"
+                [class.status--approved]="order.status === 'APPROVED'"
+                [class.status--rejected]="order.status === 'REJECTED'"
+              >
+                {{ order.status }}
+              </span>
+
+            </div>
+
+          } @empty {
+
+            <div class="orders-table__empty">
+              No recent orders found.
+            </div>
+
+          }
+
+        </div>
+
+      </article>
+
+
+      <!-- Order Overview -->
+      <article class="dashboard-card">
+
+        <div class="dashboard-card__header">
+
+          <div>
+            <h2>Order Overview</h2>
+
+            <p>
+              Current order status.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="order-overview">
+
+          <div class="order-overview__item">
+
+            <div class="order-overview__label">
+
+              <span
+                class="status-dot status-dot--pending"
+              ></span>
+
+              Pending
+
+            </div>
+
+            <strong>
+              {{ dashboard.pendingOrders }}
+            </strong>
+
+          </div>
+
+
+          <div class="order-overview__item">
+
+            <div class="order-overview__label">
+
+              <span
+                class="status-dot status-dot--approved"
+              ></span>
+
+              Approved
+
+            </div>
+
+            <strong>
+              {{ dashboard.approvedOrders }}
+            </strong>
+
+          </div>
+
+
+          <div class="order-overview__item">
+
+            <div class="order-overview__label">
+
+              <span
+                class="status-dot status-dot--rejected"
+              ></span>
+
+              Rejected
+
+            </div>
+
+            <strong>
+              {{ dashboard.rejectedOrders }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  }
+
+</div>

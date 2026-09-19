@@ -1,0 +1,122 @@
+<div
+  class="order-reject-dialog__backdrop"
+  (click)="close()"
+>
+  <div
+    class="order-reject-dialog"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <header class="order-reject-dialog__header">
+      <div class="order-reject-dialog__title">
+        <div class="order-reject-dialog__title-icon">
+          <lucide-icon
+            [img]="TriangleAlert"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2>Reject Order</h2>
+          <span>Provide a reason for rejecting this order</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="order-reject-dialog__close"
+        aria-label="Close"
+        [disabled]="isSaving"
+        (click)="close()"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <div class="order-reject-dialog__content">
+
+      <div class="order-reject-dialog__message">
+        <lucide-icon
+          [img]="TriangleAlert"
+          [size]="17"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>
+          Please provide a reason before rejecting this order.
+        </span>
+      </div>
+
+      <div class="order-reject-dialog__field">
+        <label for="rejectionReason">
+          Rejection Reason
+        </label>
+
+        <textarea
+          id="rejectionReason"
+          [(ngModel)]="rejectionReason"
+          rows="5"
+          placeholder="Enter the reason for rejecting this order..."
+          [disabled]="isSaving"
+        ></textarea>
+
+        <span class="order-reject-dialog__hint">
+          This reason will be visible to the site manager.
+        </span>
+      </div>
+
+      @if (errorMessage) {
+        <div class="order-reject-dialog__error">
+          <lucide-icon
+            [img]="TriangleAlert"
+            [size]="16"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="order-reject-dialog__footer">
+
+      <button
+        type="button"
+        class="order-reject-dialog__cancel"
+        [disabled]="isSaving"
+        (click)="close()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="order-reject-dialog__confirm"
+        [disabled]="isSaving || !rejectionReason.trim()"
+        (click)="confirm()"
+      >
+        @if (isSaving) {
+          <span>Rejecting...</span>
+        } @else {
+          <lucide-icon
+            [img]="TriangleAlert"
+            [size]="15"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+          <span>Reject Order</span>
+        }
+      </button>
+
+    </footer>
+
+  </div>
+</div>

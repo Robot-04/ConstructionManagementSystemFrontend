@@ -1,0 +1,393 @@
+<div class="managers">
+
+  @if (isLoading) {
+
+    <div class="managers__loading">
+      <div class="loading-spinner"></div>
+      <span>Loading managers...</span>
+    </div>
+
+  } @else if (errorMessage) {
+
+    <div class="managers__error">
+      {{ errorMessage }}
+    </div>
+
+  } @else {
+
+    <section class="managers__card">
+
+      <!-- Toolbar -->
+      <div class="managers__card-header">
+
+        <div class="managers__search">
+
+          <lucide-icon
+            [img]="Search"
+            [size]="18"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <input
+            type="search"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            placeholder="Search managers..."
+          />
+
+        </div>
+
+        <div class="managers__header-actions">
+
+          <span class="managers__count">
+            {{ filteredManagers.length }}
+            {{ filteredManagers.length === 1 ? 'manager' : 'managers' }}
+          </span>
+
+          <a
+            routerLink="/admin/managers/create"
+            class="managers__add-button"
+          >
+
+            <lucide-icon
+              [img]="Plus"
+              [size]="18"
+              [strokeWidth]="2"
+            ></lucide-icon>
+
+            <span>
+              Add Manager
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Managers Table -->
+      <div class="managers-table">
+
+        <div
+          class="managers-table__row managers-table__row--header"
+        >
+          <span>Manager</span>
+          <span>Contact</span>
+          <span>Site</span>
+          <span>Status</span>
+          <span>Actions</span>
+        </div>
+
+
+        @for (
+          manager of filteredManagers;
+          track manager.id
+        ) {
+
+          <div class="managers-table__row">
+
+            <!-- Manager -->
+            <div class="manager-cell">
+
+              <div class="manager-cell__avatar">
+                {{ manager.name.charAt(0).toUpperCase() }}
+              </div>
+
+              <div class="manager-cell__info">
+
+                <strong>
+                  {{ manager.name }}
+                </strong>
+
+                <span>
+                  Manager #{{ manager.id }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Contact -->
+            <div class="contact-cell">
+
+              <span>
+                {{ manager.email }}
+              </span>
+
+              <span>
+                {{ manager.phone || 'No phone number' }}
+              </span>
+
+            </div>
+
+
+            <!-- Site -->
+            <div class="site-cell">
+
+              @if (manager.site_id) {
+
+                <span class="site-cell__assigned">
+                  {{ getSiteName(manager.site_id) }}
+                </span>
+
+              } @else {
+
+                <span class="site-cell__empty">
+                  Not assigned
+                </span>
+
+              }
+
+            </div>
+
+
+            <!-- Status -->
+            <div>
+
+              @if (manager.is_active === 1) {
+
+                <span class="status status--active">
+                  Active
+                </span>
+
+              } @else {
+
+                <span class="status status--inactive">
+                  Inactive
+                </span>
+
+              }
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="manager-actions">
+
+              <button
+                type="button"
+                title="View manager"
+                aria-label="View manager"
+                (click)="openViewDialog(manager)"
+              >
+                <lucide-icon
+                  [img]="Eye"
+                  [size]="17"
+                  [strokeWidth]="1.8"
+                ></lucide-icon>
+              </button>
+
+
+              <button
+                type="button"
+                class="manager-list__action"
+                (click)="openEditManager(manager.id)"
+                aria-label="Edit manager"
+              >
+                <lucide-icon
+                  [img]="Pencil"
+                  [size]="18"
+                  [strokeWidth]="1.8"
+                ></lucide-icon>
+              </button>
+
+
+              @if (manager.is_active === 1) {
+                <button
+                  type="button"
+                  title="Deactivate manager"
+                  aria-label="Deactivate manager"
+                  (click)="openStatusDialog(manager)"
+                >
+                  <lucide-icon
+                    [img]="UserX"
+                    [size]="17"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  title="Restore manager"
+                  aria-label="Restore manager"
+                  (click)="openStatusDialog(manager)"
+                >
+                  <lucide-icon
+                    [img]="UserCheck"
+                    [size]="17"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+                </button>
+              }
+
+            </div>
+
+          </div>
+
+        } @empty {
+
+          <div class="managers-table__empty">
+
+            <strong>
+              No managers found
+            </strong>
+
+            <span>
+              Create your first site manager to get started.
+            </span>
+
+          </div>
+
+        }
+
+        @if (isViewDialogOpen && selectedManager) {
+
+          <div
+            class="manager-dialog-backdrop"
+            (click)="closeViewDialog()"
+          >
+
+            <div
+              class="manager-dialog"
+              (click)="$event.stopPropagation()"
+            >
+
+              <div class="manager-dialog__header">
+
+                <div>
+                  <h2>Manager Details</h2>
+                  <p>Manager #{{ selectedManager.id }}</p>
+                </div>
+
+                <button
+                  type="button"
+                  class="manager-dialog__close"
+                  (click)="closeViewDialog()"
+                  aria-label="Close dialog"
+                >
+                  <lucide-icon
+                    [img]="X"
+                    [size]="19"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+                </button>
+
+              </div>
+
+              <div class="manager-dialog__profile">
+
+                <div class="manager-dialog__avatar">
+                  {{ selectedManager.name.charAt(0).toUpperCase() }}
+                </div>
+
+                <div>
+                  <h3>{{ selectedManager.name }}</h3>
+                  <span>Manager #{{ selectedManager.id }}</span>
+                </div>
+
+              </div>
+
+              <div class="manager-dialog__details">
+
+                <div class="manager-dialog__item">
+                  <span class="manager-dialog__label">
+                    Email
+                  </span>
+
+                  <span class="manager-dialog__value">
+                    {{ selectedManager.email }}
+                  </span>
+                </div>
+
+                <div class="manager-dialog__item">
+                  <span class="manager-dialog__label">
+                    Phone
+                  </span>
+
+                  <span class="manager-dialog__value">
+                    {{ selectedManager.phone || 'No phone number' }}
+                  </span>
+                </div>
+
+                <div class="manager-dialog__item">
+                  <span class="manager-dialog__label">
+                    Assigned Site
+                  </span>
+
+                  <span class="manager-dialog__value">
+                    @if (selectedManager.site_id) {
+                      {{ getSiteName(selectedManager.site_id) }}
+                    } @else {
+                      Not assigned
+                    }
+                  </span>
+                </div>
+
+                <div class="manager-dialog__item">
+                  <span class="manager-dialog__label">
+                    Status
+                  </span>
+
+                  @if (selectedManager.is_active === 1) {
+                    <span class="status status--active">
+                      Active
+                    </span>
+                  } @else {
+                    <span class="status status--inactive">
+                      Inactive
+                    </span>
+                  }
+                </div>
+
+              </div>
+
+              <div class="manager-dialog__footer">
+
+                <button
+                  type="button"
+                  class="manager-dialog__close-button"
+                  (click)="closeViewDialog()"
+                >
+                  Close
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+      @if (
+        isEditDialogOpen &&
+        editingManagerId !== null
+      ) {
+
+        <app-manager-edit-dialog
+          [managerId]="editingManagerId"
+          (closed)="closeEditManager()"
+          (saved)="onManagerUpdated()"
+        ></app-manager-edit-dialog>
+
+      }
+
+      @if (isStatusDialogOpen && statusManager) {
+
+        <app-manager-status-dialog
+          [manager]="statusManager"
+          (closed)="closeStatusDialog()"
+          (changed)="onManagerStatusChanged()"
+        ></app-manager-status-dialog>
+
+      }
+
+    </section>
+
+  }
+
+</div>

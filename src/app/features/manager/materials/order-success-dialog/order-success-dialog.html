@@ -1,0 +1,100 @@
+<div
+  class="order-success-dialog__backdrop"
+  (click)="close()"
+>
+  <div
+    class="order-success-dialog"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <header class="order-success-dialog__header">
+
+      <div class="order-success-dialog__title">
+        <div class="order-success-dialog__title-icon">
+          <lucide-icon
+            [img]="CheckCircle2"
+            [size]="22"
+            [strokeWidth]="2"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2>Order Placed</h2>
+          <span>Material order submitted successfully</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="order-success-dialog__close"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </header>
+
+    <!-- Content -->
+    <div class="order-success-dialog__content">
+
+      <div class="order-success-dialog__success">
+
+        <div class="order-success-dialog__success-icon">
+          <lucide-icon
+            [img]="CheckCircle2"
+            [size]="32"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <h3>Your order was successfully placed</h3>
+
+        <p>
+          Your material order has been submitted and is now
+          waiting for admin approval.
+        </p>
+
+        <div class="order-success-dialog__order-number">
+          <span>Order Number</span>
+          <strong>#{{ orderId }}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="order-success-dialog__footer">
+
+      <button
+        type="button"
+        class="order-success-dialog__done"
+        (click)="close()"
+      >
+        Done
+      </button>
+
+      <button
+        type="button"
+        class="order-success-dialog__orders"
+        (click)="goToOrders()"
+      >
+        <lucide-icon
+          [img]="ClipboardList"
+          [size]="15"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>View My Orders</span>
+      </button>
+
+    </footer>
+
+  </div>
+</div>

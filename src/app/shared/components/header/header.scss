@@ -1,0 +1,175 @@
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mixins;
+
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  left: vars.$sidebar-width;
+
+  height: vars.$header-height;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: var(--surface-primary);
+
+  border-bottom: 1px solid var(--border-primary);
+
+  z-index: 10;
+
+  transition:
+    left vars.$transition-normal,
+    background-color vars.$transition-normal,
+    border-color vars.$transition-normal;
+
+
+  &__left {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+  }
+
+
+  &__menu-button {
+    display: none;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: vars.$radius-md;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 18px;
+  }
+
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+
+    h1 {
+      color: var(--text-primary);
+
+      font-size: vars.$font-size-lg;
+      font-weight: 700;
+    }
+
+
+    span {
+      color: var(--text-muted);
+
+      font-size: vars.$font-size-xs;
+    }
+  }
+
+
+  &__actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+  }
+
+
+  &__action {
+    @include mixins.flex-center;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: vars.$radius-md;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    transition:
+      background-color vars.$transition-fast,
+      color vars.$transition-fast;
+
+
+    &:hover {
+      background: var(--bg-tertiary);
+
+      color: var(--text-primary);
+    }
+  }
+
+
+  &__profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-left: 8px;
+
+    padding-left: 16px;
+
+    border-left: 1px solid var(--border-primary);
+  }
+
+
+  &__avatar {
+    @include mixins.flex-center;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    background: var(--color-primary-light);
+
+    color: var(--color-primary);
+
+    font-size: vars.$font-size-sm;
+    font-weight: 700;
+  }
+
+
+  &__user {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+
+    strong {
+      color: var(--text-primary);
+
+      font-size: vars.$font-size-sm;
+    }
+
+
+    span {
+      color: var(--text-muted);
+
+      font-size: vars.$font-size-xs;
+    }
+  }
+}
+
+
+// ==========================================
+// Responsive
+// ==========================================
+
+@include mixins.respond-to(md) {
+  .header {
+    &__menu-button {
+      display: block;
+    }
+  }
+}

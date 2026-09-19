@@ -1,0 +1,388 @@
+<div
+  class="manager-edit-dialog__backdrop"
+  (click)="onBackdropClick($event)"
+>
+
+  <section
+    class="manager-edit-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="edit-manager-title"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div class="manager-edit-dialog__header">
+
+      <div class="manager-edit-dialog__title">
+
+        <div class="manager-edit-dialog__icon">
+
+          <lucide-icon
+            [img]="UserPlus"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+        </div>
+
+        <div>
+
+          <h2 id="edit-manager-title">
+            Edit Manager
+          </h2>
+
+          <p>
+            Update manager details and site assignment.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="manager-edit-dialog__close"
+        (click)="closeDialog()"
+        [disabled]="isSaving"
+        aria-label="Close dialog"
+      >
+
+        <lucide-icon
+          [img]="X"
+          [size]="20"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+      </button>
+
+    </div>
+
+
+    <!-- Error -->
+    @if (errorMessage) {
+
+      <div class="manager-edit-dialog__error">
+        {{ errorMessage }}
+      </div>
+
+    }
+
+
+    <!-- Loading -->
+    @if (isLoading) {
+
+      <div class="manager-edit-dialog__loading">
+
+        <span class="loading-spinner"></span>
+
+        <span>
+          Loading manager details...
+        </span>
+
+      </div>
+
+    }
+
+
+    <!-- Form -->
+    <form
+      [formGroup]="managerForm"
+      (ngSubmit)="onSubmit()"
+      class="manager-edit-dialog__body"
+    >
+
+      <!-- Name -->
+      <div class="form-field">
+
+        <label for="edit-manager-name">
+          Full Name
+          <span>*</span>
+        </label>
+
+        <input
+          id="edit-manager-name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter manager name"
+          autocomplete="name"
+        />
+
+        @if (isInvalid('name')) {
+
+          <small>
+
+            @if (
+              managerForm.controls.name.errors?.['required']
+            ) {
+              Name is required.
+            }
+
+            @if (
+              managerForm.controls.name.errors?.['minlength']
+            ) {
+              Name must be at least 2 characters.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Email -->
+      <div class="form-field">
+
+        <label for="edit-manager-email">
+          Email Address
+          <span>*</span>
+        </label>
+
+        <input
+          id="edit-manager-email"
+          type="email"
+          formControlName="email"
+          placeholder="manager@example.com"
+          autocomplete="email"
+        />
+
+        @if (isInvalid('email')) {
+
+          <small>
+
+            @if (
+              managerForm.controls.email.errors?.['required']
+            ) {
+              Email is required.
+            }
+
+            @if (
+              managerForm.controls.email.errors?.['email']
+            ) {
+              Enter a valid email address.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Phone -->
+      <div class="form-field">
+
+        <label for="edit-manager-phone">
+          Phone Number
+        </label>
+
+        <input
+          id="edit-manager-phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="9876543210"
+          maxlength="10"
+          autocomplete="tel"
+        />
+
+        @if (isInvalid('phone')) {
+
+          <small>
+            Enter a valid 10-digit Indian mobile number.
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Site -->
+      <div class="form-field">
+
+        <label>
+          Assign Site
+
+          <span class="optional">
+            (Optional)
+          </span>
+
+        </label>
+
+
+        <div class="site-dropdown">
+
+          <!-- Trigger -->
+          <button
+            type="button"
+            class="site-dropdown__trigger"
+            [class.site-dropdown__trigger--open]="
+              isSiteDropdownOpen
+            "
+            (click)="toggleSiteDropdown()"
+            [disabled]="isLoading || isSaving"
+          >
+
+            <span
+              [class.site-dropdown__placeholder]="
+                !selectedSite
+              "
+            >
+              {{ selectedSiteName }}
+            </span>
+
+            <lucide-icon
+              [img]="ChevronDown"
+              [size]="17"
+              [strokeWidth]="1.8"
+              [class.site-dropdown__arrow--open]="
+                isSiteDropdownOpen
+              "
+            ></lucide-icon>
+
+          </button>
+
+
+          <!-- Dropdown -->
+          @if (isSiteDropdownOpen) {
+
+            <div class="site-dropdown__menu">
+
+              <!-- No Site -->
+              <button
+                type="button"
+                class="site-dropdown__option"
+                [class.site-dropdown__option--selected]="
+                  !selectedSite
+                "
+                (click)="selectSite(null)"
+              >
+
+                <span>
+                  No site assigned
+                </span>
+
+                @if (!selectedSite) {
+
+                  <lucide-icon
+                    [img]="Check"
+                    [size]="16"
+                    [strokeWidth]="2"
+                  ></lucide-icon>
+
+                }
+
+              </button>
+
+
+              <!-- Available + Currently Assigned Site -->
+              @for (
+                site of availableSites;
+                track site.id
+              ) {
+
+                <button
+                  type="button"
+                  class="site-dropdown__option"
+                  [class.site-dropdown__option--selected]="
+                    selectedSite?.id === site.id
+                  "
+                  (click)="selectSite(site)"
+                >
+
+                  <span>
+                    {{ site.name }}
+                  </span>
+
+                  @if (
+                    selectedSite?.id === site.id
+                  ) {
+
+                    <lucide-icon
+                      [img]="Check"
+                      [size]="16"
+                      [strokeWidth]="2"
+                    ></lucide-icon>
+
+                  }
+
+                </button>
+
+              }
+
+
+              @if (availableSites.length === 0) {
+
+                <div class="site-dropdown__empty">
+                  No available sites
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        @if (
+          !isLoading &&
+          availableSites.length === 0 &&
+          !selectedSite
+        ) {
+
+          <p class="form-field__hint">
+            No active unassigned sites are currently available.
+          </p>
+
+        }
+
+      </div>
+
+
+      <!-- Actions -->
+      <div class="manager-edit-dialog__actions">
+
+        <button
+          type="button"
+          class="manager-edit-dialog__cancel"
+          (click)="closeDialog()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="submit"
+          class="manager-edit-dialog__submit"
+          [disabled]="isSaving || isLoading"
+        >
+
+          @if (isSaving) {
+
+            <span class="button-spinner"></span>
+
+            <span>
+              Updating...
+            </span>
+
+          } @else {
+
+            <span>
+              Update Manager
+            </span>
+
+          }
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</div>

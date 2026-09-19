@@ -1,0 +1,309 @@
+<div
+  class="order-view-dialog__backdrop"
+  (click)="close()"
+>
+  <div
+    class="order-view-dialog"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <header class="order-view-dialog__header">
+
+      <div class="order-view-dialog__title">
+
+        <div class="order-view-dialog__title-icon">
+          <lucide-icon
+            [img]="ClipboardList"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2>Order #{{ order.id }}</h2>
+          <span>Material Order</span>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="order-view-dialog__close"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </header>
+
+    <!-- Content -->
+    <div class="order-view-dialog__content">
+
+      <!-- Order Information -->
+      <section class="order-view-dialog__section">
+
+        <div class="order-view-dialog__section-title">
+
+          <lucide-icon
+            [img]="ClipboardList"
+            [size]="16"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Order Information</span>
+
+        </div>
+
+        <div class="order-view-dialog__info-grid">
+
+          <!-- Site -->
+          <div class="order-view-dialog__info">
+
+            <span class="order-view-dialog__label">
+              Site
+            </span>
+
+            <strong>
+              {{ order.site.name }}
+            </strong>
+
+            <small>
+              Site #{{ order.site.id }}
+            </small>
+
+          </div>
+
+          <!-- Created -->
+          <div class="order-view-dialog__info">
+
+            <span class="order-view-dialog__label">
+              Created
+            </span>
+
+            <strong>
+              {{ order.created_at | date:'mediumDate' }}
+            </strong>
+
+          </div>
+
+          <!-- Status -->
+          <div class="order-view-dialog__info">
+
+            <span class="order-view-dialog__label">
+              Status
+            </span>
+
+            <span
+              class="order-view-dialog__status"
+              [class.order-view-dialog__status--pending]="order.status === 'PENDING'"
+              [class.order-view-dialog__status--approved]="order.status === 'APPROVED'"
+              [class.order-view-dialog__status--rejected]="order.status === 'REJECTED'"
+            >
+
+              <lucide-icon
+                [img]="getStatusIcon()"
+                [size]="12"
+                [strokeWidth]="2"
+              ></lucide-icon>
+
+              <span>
+                {{ order.status }}
+              </span>
+
+            </span>
+
+          </div>
+
+          <!-- Manager -->
+          <div class="order-view-dialog__info">
+
+            <span class="order-view-dialog__label">
+              Manager
+            </span>
+
+            <strong>
+              {{ order.manager.name }}
+            </strong>
+
+            <small>
+              Manager #{{ order.manager.id }}
+            </small>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- Materials -->
+      <section class="order-view-dialog__section">
+
+        <div class="order-view-dialog__section-title">
+
+          <lucide-icon
+            [img]="Package"
+            [size]="16"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Materials</span>
+
+        </div>
+
+        @if (order.items.length > 0) {
+
+          <div class="order-view-dialog__items">
+
+            @for (item of order.items; track item.material_id) {
+
+              <div class="order-view-dialog__item">
+
+                <div class="order-view-dialog__item-icon">
+
+                  <lucide-icon
+                    [img]="Package"
+                    [size]="17"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+
+                </div>
+
+                <div class="order-view-dialog__item-info">
+
+                  <strong>
+                    {{ item.material_name }}
+                  </strong>
+
+                  <span>
+                    Material #{{ item.material_id }}
+                  </span>
+
+                </div>
+
+                <div class="order-view-dialog__quantity">
+
+                  <strong>
+                    {{ item.quantity }}
+                  </strong>
+
+                  <span>
+                    {{ item.unit }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="order-view-dialog__no-items">
+            No materials found for this order.
+          </div>
+
+        }
+
+      </section>
+
+      <!-- Rejection Reason -->
+      @if (order.status === 'REJECTED' && order.rejection_reason) {
+
+        <div class="order-view-dialog__rejection">
+
+          <div class="order-view-dialog__rejection-icon">
+
+            <lucide-icon
+              [img]="TriangleAlert"
+              [size]="17"
+              [strokeWidth]="1.8"
+            ></lucide-icon>
+
+          </div>
+
+          <div class="order-view-dialog__rejection-content">
+
+            <strong>
+              Rejection Reason
+            </strong>
+
+            <p>
+              {{ order.rejection_reason }}
+            </p>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="order-view-dialog__footer">
+
+      @if (errorMessage) {
+
+        <div class="order-view-dialog__action-error">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+      @if (order.status === 'PENDING') {
+
+        <button
+          type="button"
+          class="order-view-dialog__reject"
+          [disabled]="isActionLoading"
+          (click)="rejectOrder()"
+        >
+          <lucide-icon
+            [img]="XCircle"
+            [size]="15"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>Reject</span>
+        </button>
+
+        <button
+          type="button"
+          class="order-view-dialog__approve"
+          [disabled]="isActionLoading"
+          (click)="approveOrder()"
+        >
+          <lucide-icon
+            [img]="CheckCircle2"
+            [size]="15"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>
+            {{ isActionLoading ? 'Processing...' : 'Approve' }}
+          </span>
+        </button>
+
+      }
+
+      <button
+        type="button"
+        class="order-view-dialog__close-button"
+        [disabled]="isActionLoading"
+        (click)="close()"
+      >
+        Close
+      </button>
+
+    </footer>
+
+  </div>
+</div>

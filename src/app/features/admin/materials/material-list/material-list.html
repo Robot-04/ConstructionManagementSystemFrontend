@@ -1,0 +1,311 @@
+<div class="materials">
+
+  @if (isLoading) {
+
+    <div class="materials__loading">
+      <div class="loading-spinner"></div>
+      <span>Loading materials...</span>
+    </div>
+
+  } @else if (errorMessage) {
+
+    <div class="materials__error">
+      {{ errorMessage }}
+    </div>
+
+  } @else {
+
+    <section class="materials__card">
+
+      <!-- Toolbar -->
+      <div class="materials__card-header">
+
+        <!-- Search -->
+        <div class="materials__search">
+
+          <lucide-icon
+            [img]="Search"
+            [size]="18"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <input
+            type="search"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            placeholder="Search materials..."
+          />
+
+          @if (searchTerm) {
+
+            <button
+              type="button"
+              class="materials__clear"
+              (click)="clearSearch()"
+              aria-label="Clear search"
+            >
+              <lucide-icon
+                [img]="X"
+                [size]="16"
+                [strokeWidth]="1.8"
+              ></lucide-icon>
+            </button>
+
+          }
+
+        </div>
+
+        <!-- Right side -->
+        <div class="materials__header-actions">
+
+          <span class="materials__count">
+
+            {{ filteredMaterials.length }}
+
+            {{
+              filteredMaterials.length === 1
+                ? 'material'
+                : 'materials'
+            }}
+
+          </span>
+
+          <a
+            routerLink="/admin/materials/create"
+            class="materials__add-button"
+          >
+
+            <lucide-icon
+              [img]="Plus"
+              [size]="18"
+              [strokeWidth]="2"
+            ></lucide-icon>
+
+            <span>
+              Add Material
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Materials Table -->
+      <div class="materials-table">
+
+        <div
+          class="materials-table__row materials-table__row--header"
+        >
+          <span>Material</span>
+          <span>Unit</span>
+          <span>Description</span>
+          <span>Status</span>
+          <span>Actions</span>
+        </div>
+
+
+        @for (
+          material of filteredMaterials;
+          track material.id
+        ) {
+
+          <div class="materials-table__row">
+
+            <!-- Material -->
+            <div class="material-cell">
+
+              <div class="material-cell__icon">
+
+                <lucide-icon
+                  [img]="Package"
+                  [size]="18"
+                  [strokeWidth]="1.8"
+                ></lucide-icon>
+
+              </div>
+
+              <div class="material-cell__info">
+
+                <strong>
+                  {{ material.name }}
+                </strong>
+
+                <span>
+                  Material #{{ material.id }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Unit -->
+            <div class="unit-cell">
+
+              <span>
+                {{ material.unit }}
+              </span>
+
+            </div>
+
+
+            <!-- Description -->
+            <div class="description-cell">
+
+              <span
+                [title]="material.description || ''"
+              >
+                {{ material.description || 'Not provided' }}
+              </span>
+
+            </div>
+
+
+            <!-- Status -->
+            <div>
+
+              @if (material.is_active === 1) {
+
+                <span class="status status--active">
+                  Active
+                </span>
+
+              } @else {
+
+                <span class="status status--inactive">
+                  Inactive
+                </span>
+
+              }
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="material-actions">
+
+              <!-- View -->
+              <button
+                type="button"
+                title="View material"
+                (click)="openViewDialog(material)"
+              >
+                <lucide-icon
+                  [img]="Eye"
+                  [size]="17"
+                  [strokeWidth]="1.8"
+                ></lucide-icon>
+              </button>
+
+
+              <!-- Edit -->
+              <button
+                type="button"
+                title="Edit material"
+                (click)="openEditDialog(material)"
+              >
+                <lucide-icon
+                  [img]="Pencil"
+                  [size]="17"
+                  [strokeWidth]="1.8"
+                ></lucide-icon>
+              </button>
+
+
+              <!-- Status -->
+              @if (material.is_active) {
+
+                <button
+                  type="button"
+                  title="Deactivate material"
+                  (click)="openStatusDialog(material)"
+                >
+                  <lucide-icon
+                    [img]="Ban"
+                    [size]="17"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+                </button>
+
+              } @else {
+
+                <button
+                  type="button"
+                  title="Activate material"
+                  (click)="openStatusDialog(material)"
+                >
+                  <lucide-icon
+                    [img]="RotateCcw"
+                    [size]="17"
+                    [strokeWidth]="1.8"
+                  ></lucide-icon>
+                </button>
+
+              }
+
+            </div>
+
+          </div>
+
+        } @empty {
+
+          <div class="materials-table__empty">
+
+            <strong>
+              @if (searchTerm) {
+                No materials found
+              } @else {
+                No materials yet
+              }
+            </strong>
+
+            <span>
+              @if (searchTerm) {
+                No materials match "{{ searchTerm }}".
+              } @else {
+                Create your first construction material.
+              }
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+      @if (isViewDialogOpen && selectedMaterial) {
+
+        <app-material-view-dialog
+          [material]="selectedMaterial"
+          (closed)="closeViewDialog()"
+        ></app-material-view-dialog>
+
+      }
+
+      @if (isEditDialogOpen && selectedMaterial) {
+        <app-material-edit-dialog
+          [material]="selectedMaterial"
+          [isSaving]="isSaving"
+          [errorMessage]="editErrorMessage"
+          (closed)="closeEditDialog()"
+          (saved)="saveMaterialChanges($event)"
+        ></app-material-edit-dialog>
+      }
+
+      @if (isStatusDialogOpen && selectedStatusMaterial) {
+        <app-material-status-dialog
+          [material]="selectedStatusMaterial"
+          [isSaving]="isStatusSaving"
+          [errorMessage]="statusErrorMessage"
+          (closed)="closeStatusDialog()"
+          (confirmed)="changeMaterialStatus()"
+        ></app-material-status-dialog>
+      }
+
+    </section>
+
+  }
+
+</div>

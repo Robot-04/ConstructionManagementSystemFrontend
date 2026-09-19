@@ -1,0 +1,178 @@
+<div
+  class="manager-status-dialog__backdrop"
+  (click)="onBackdropClick($event)"
+>
+  <section
+    class="manager-status-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="manager-status-title"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div class="manager-status-dialog__header">
+
+      <div class="manager-status-dialog__title">
+
+        <div
+          class="manager-status-dialog__icon"
+          [class.manager-status-dialog__icon--restore]="!isActive"
+          [class.manager-status-dialog__icon--blocked]="isActive && hasAssignedSite"
+        >
+          <lucide-icon
+            [img]="isActive ? UserX : UserCheck"
+            [size]="21"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2 id="manager-status-title">
+            {{ actionTitle }}
+          </h2>
+
+          <p>
+            Manager #{{ manager.id }}
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="manager-status-dialog__close"
+        (click)="closeDialog()"
+        [disabled]="isSaving"
+        aria-label="Close dialog"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="19"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </div>
+
+
+    <!-- Content -->
+    <div class="manager-status-dialog__body">
+
+      <!-- Assigned site warning -->
+      @if (isActive && hasAssignedSite) {
+
+        <div class="manager-status-dialog__blocked">
+
+          <lucide-icon
+            [img]="AlertTriangle"
+            [size]="21"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <div>
+            <strong>
+              Cannot deactivate manager
+            </strong>
+
+            <p>
+              <strong>{{ manager.name }}</strong>
+              is currently assigned to a site.
+              Please unassign the manager from the site before
+              deactivating them.
+            </p>
+          </div>
+
+        </div>
+
+      } @else {
+
+        <!-- Normal status confirmation -->
+        <div class="manager-status-dialog__warning">
+
+          <lucide-icon
+            [img]="AlertTriangle"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <div>
+
+            <strong>
+              {{ actionText }} {{ manager.name }}?
+            </strong>
+
+            <p>
+              {{ description }}
+            </p>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- Error -->
+      @if (errorMessage) {
+
+        <div class="manager-status-dialog__error">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="manager-status-dialog__actions">
+
+      <button
+        type="button"
+        class="manager-status-dialog__cancel"
+        (click)="closeDialog()"
+        [disabled]="isSaving"
+      >
+        Close
+      </button>
+
+
+      <!-- Confirm -->
+      <button
+        type="button"
+        class="manager-status-dialog__confirm"
+        [class.manager-status-dialog__confirm--restore]="!isActive"
+        [class.manager-status-dialog__confirm--disabled]="isActive && hasAssignedSite"
+        (click)="confirmStatusChange()"
+        [disabled]="isSaving || (isActive && hasAssignedSite)"
+      >
+
+        @if (isSaving) {
+
+          <span class="button-spinner"></span>
+
+          <span>
+            {{ isActive ? 'Deactivating...' : 'Restoring...' }}
+          </span>
+
+        } @else {
+
+          <lucide-icon
+            [img]="isActive ? UserX : UserCheck"
+            [size]="17"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+          <span>
+            {{ actionText }} Manager
+          </span>
+
+        }
+
+      </button>
+
+    </div>
+
+  </section>
+</div>

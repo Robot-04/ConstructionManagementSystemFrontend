@@ -1,0 +1,292 @@
+<div
+  class="site-edit-dialog__backdrop"
+  (click)="close()"
+>
+  <section
+    class="site-edit-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="site-edit-title"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <header class="site-edit-dialog__header">
+
+      <div class="site-edit-dialog__icon">
+        <lucide-icon
+          [img]="MapPin"
+          [size]="21"
+        />
+      </div>
+
+      <div class="site-edit-dialog__heading">
+        <h2 id="site-edit-title">
+          Edit Site
+        </h2>
+
+        <p>
+          Update site information
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="site-edit-dialog__close"
+        aria-label="Close dialog"
+        [disabled]="isSaving"
+        (click)="close()"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="20"
+        />
+      </button>
+
+    </header>
+
+
+    <!-- Body -->
+    <form
+      class="site-edit-dialog__form"
+      [formGroup]="siteForm"
+      (ngSubmit)="save()"
+    >
+
+      <div class="site-edit-dialog__body">
+
+        <!-- Site Name -->
+        <div class="site-edit-dialog__field">
+
+          <label for="site-name">
+            Site Name
+            <span>*</span>
+          </label>
+
+          <input
+            id="site-name"
+            type="text"
+            formControlName="name"
+            placeholder="Enter site name"
+            autocomplete="off"
+          />
+
+          @if (name.invalid && name.touched) {
+
+            <small class="site-edit-dialog__field-error">
+
+              @if (name.errors?.['required']) {
+                Site name is required.
+              } @else if (name.errors?.['minlength']) {
+                Site name must be at least 2 characters.
+              } @else if (name.errors?.['maxlength']) {
+                Site name cannot exceed 100 characters.
+              }
+
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- Address -->
+        <div class="site-edit-dialog__field">
+
+          <label for="site-address">
+            Address
+            <span>*</span>
+          </label>
+
+          <textarea
+            id="site-address"
+            rows="3"
+            formControlName="address"
+            placeholder="Enter site address"
+          ></textarea>
+
+          @if (address.invalid && address.touched) {
+
+            <small class="site-edit-dialog__field-error">
+
+              @if (address.errors?.['required']) {
+                Address is required.
+              } @else if (address.errors?.['maxlength']) {
+                Address cannot exceed 255 characters.
+              }
+
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- Location Grid -->
+        <div class="site-edit-dialog__grid">
+
+          <!-- City -->
+          <div class="site-edit-dialog__field">
+
+            <label for="site-city">
+              City
+              <span>*</span>
+            </label>
+
+            <input
+              id="site-city"
+              type="text"
+              formControlName="city"
+              placeholder="Enter city"
+            />
+
+            @if (city.invalid && city.touched) {
+
+              <small class="site-edit-dialog__field-error">
+
+                @if (city.errors?.['required']) {
+                  City is required.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+
+          <!-- State -->
+          <div class="site-edit-dialog__field">
+
+            <label for="site-state">
+              State
+              <span>*</span>
+            </label>
+
+            <input
+              id="site-state"
+              type="text"
+              formControlName="state"
+              placeholder="Enter state"
+            />
+
+            @if (state.invalid && state.touched) {
+
+              <small class="site-edit-dialog__field-error">
+
+                @if (state.errors?.['required']) {
+                  State is required.
+                }
+
+              </small>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- Pincode -->
+        <div class="site-edit-dialog__field">
+
+          <label for="site-pincode">
+            Pincode
+            <span>*</span>
+          </label>
+
+          <input
+            id="site-pincode"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            formControlName="pincode"
+            placeholder="Enter 6-digit pincode"
+            autocomplete="postal-code"
+          />
+
+          @if (pincode.invalid && pincode.touched) {
+
+            <small class="site-edit-dialog__field-error">
+
+              @if (pincode.errors?.['required']) {
+                Pincode is required.
+              } @else if (pincode.errors?.['pattern']) {
+                Pincode must contain exactly 6 digits.
+              }
+
+            </small>
+
+          }
+
+        </div>
+
+
+        <!-- API Error -->
+        @if (errorMessage) {
+
+          <div class="site-edit-dialog__error">
+
+            <lucide-icon
+              [img]="AlertCircle"
+              [size]="18"
+            />
+
+            <span>
+              {{ errorMessage }}
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- Footer -->
+      <footer class="site-edit-dialog__footer">
+
+        <button
+          type="button"
+          class="site-edit-dialog__button site-edit-dialog__button--cancel"
+          [disabled]="isSaving"
+          (click)="close()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="site-edit-dialog__button site-edit-dialog__button--primary"
+          [disabled]="isSaving"
+        >
+
+          @if (isSaving) {
+
+            <span class="site-edit-dialog__spinner"></span>
+
+            <span>
+              Saving...
+            </span>
+
+          } @else {
+
+            <lucide-icon
+              [img]="Save"
+              [size]="17"
+            />
+
+            <span>
+              Save Changes
+            </span>
+
+          }
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  </section>
+</div>

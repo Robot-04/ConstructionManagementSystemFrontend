@@ -1,0 +1,109 @@
+<div class="login-page">
+
+  <!-- <div class="login-page__background"></div> -->
+
+  <main class="login-card">
+
+    <div class="login-card__header">
+
+      <!-- <div class="login-card__logo">
+        CM
+      </div> -->
+
+      <div>
+        <h1>Welcome Back</h1>
+
+        <p>
+          Sign in to Construction Management
+        </p>
+      </div>
+
+    </div>
+
+    @if (errorMessage) {
+      <div class="login-card__error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form
+      class="login-form"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+    >
+
+      <div class="form-field">
+
+        <label for="email">
+          Email Address
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+        />
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.invalid
+        ) {
+          <span class="form-field__error">
+            Please enter a valid email address.
+          </span>
+        }
+
+      </div>
+
+
+      <div class="form-field">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        />
+
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.invalid
+        ) {
+          <span class="form-field__error">
+            Password must be at least 6 characters.
+          </span>
+        }
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="isLoading"
+      >
+
+        @if (isLoading) {
+          <span>Signing in...</span>
+        } @else {
+          <span>Sign In</span>
+        }
+
+      </button>
+
+    </form>
+
+    <p class="login-card__footer">
+      Construction Management System
+    </p>
+
+  </main>
+
+</div>

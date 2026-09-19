@@ -1,0 +1,1133 @@
+.managers {
+
+  width: 100%;
+  padding: 28px 32px;
+  box-sizing: border-box;
+
+  &__card {
+    overflow: hidden;
+
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+
+    background: var(--color-surface);
+
+    box-shadow: var(--shadow-sm);
+  }
+
+  &__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    min-height: 72px;
+    padding: 14px 20px;
+
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__header-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: min(360px, 100%);
+    height: 40px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+
+    background: var(--color-background);
+    color: var(--color-text-muted);
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
+
+    input {
+      width: 100%;
+      height: 100%;
+
+      padding: 0;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+      color: var(--color-text-primary);
+
+      font: inherit;
+      font-size: 13px;
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
+    }
+  }
+
+  &__count {
+    flex-shrink: 0;
+
+    color: var(--color-text-secondary);
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &__add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 40px;
+    padding: 0 15px;
+
+    border: 1px solid var(--color-primary);
+    border-radius: 8px;
+
+    background: var(--color-primary);
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      background: var(--color-primary-hover);
+      border-color: var(--color-primary-hover);
+      box-shadow: 0 6px 18px var(--color-primary-shadow);
+
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    min-height: 300px;
+
+    color: var(--color-text-secondary);
+    font-size: 14px;
+  }
+
+  &__error {
+    padding: 18px 20px;
+
+    border: 1px solid var(--color-danger-border);
+    border-radius: 10px;
+
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+
+    font-size: 14px;
+  }
+}
+
+// ======================================================
+// Loading spinner
+// ======================================================
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+
+  animation: managers-spin 0.8s linear infinite;
+}
+
+@keyframes managers-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ======================================================
+// Managers table
+// ======================================================
+
+.managers-table {
+  width: 100%;
+  overflow-x: auto;
+
+  &__row {
+    display: grid;
+
+    grid-template-columns:
+      minmax(220px, 1.4fr)
+      minmax(220px, 1.3fr)
+      minmax(140px, 1fr)
+      minmax(90px, 0.6fr)
+      130px;
+
+    align-items: center;
+    min-width: 920px;
+
+    padding: 16px 20px;
+
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &:not(&--header) {
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: var(--color-surface-hover);
+      }
+    }
+
+    &--header {
+      padding-top: 13px;
+      padding-bottom: 13px;
+
+      background: var(--color-surface-alt);
+
+      color: var(--color-text-muted);
+
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    min-height: 220px;
+
+    color: var(--color-text-secondary);
+
+    strong {
+      color: var(--color-text-primary);
+      font-size: 15px;
+    }
+
+    span {
+      font-size: 13px;
+    }
+  }
+}
+
+// ======================================================
+// Manager
+// ======================================================
+
+.manager-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 0;
+
+  &__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 10px;
+
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    min-width: 0;
+
+    strong {
+      overflow: hidden;
+
+      color: var(--color-text-primary);
+
+      font-size: 14px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      color: var(--color-text-muted);
+      font-size: 11px;
+    }
+  }
+}
+
+// ======================================================
+// Contact
+// ======================================================
+
+.contact-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-width: 0;
+
+  span {
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:last-child {
+      color: var(--color-text-muted);
+      font-size: 11px;
+    }
+  }
+}
+
+// ======================================================
+// Site
+// ======================================================
+
+.site-cell {
+  &__assigned {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &__empty {
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+}
+
+// ======================================================
+// Status
+// ======================================================
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  &--active {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+  }
+
+  &--inactive {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+  }
+}
+
+// ======================================================
+// Actions
+// ======================================================
+
+.manager-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    padding: 0;
+
+    border: 1px solid transparent;
+    border-radius: 7px;
+
+    background: transparent;
+    color: var(--color-text-muted);
+
+    cursor: pointer;
+
+    transition:
+      color 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease;
+
+    &:hover {
+      border-color: var(--color-border);
+      background: var(--color-surface-hover);
+      color: var(--color-text-primary);
+    }
+  }
+}
+
+// ======================================================
+// Responsive
+// ======================================================
+
+@media (max-width: 900px) {
+
+  .managers {
+    padding: 24px;
+
+    &__toolbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    &__add-button {
+      width: 100%;
+    }
+
+    &__card-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    &__search {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+
+  .managers {
+    padding: 20px 16px;
+
+    &__card-header {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__search {
+      width: 100%;
+    }
+
+    &__header-actions {
+      justify-content: space-between;
+    }
+
+    &__add-button {
+      flex-shrink: 0;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+
+  .managers {
+    padding: 16px;
+
+    &__intro h2 {
+      font-size: 24px;
+    }
+  }
+}
+
+// ========================================
+// Manager View Dialog
+// ========================================
+
+.manager-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(8, 12, 24, 0.62);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  animation: manager-dialog-backdrop-in 0.2s ease;
+}
+
+.manager-dialog {
+  width: 100%;
+  max-width: 500px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+
+  background: #151d2e;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.35);
+
+  animation: manager-dialog-in 0.2s ease;
+
+  // ----------------------------------------
+  // Header
+  // ----------------------------------------
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid var(--color-border);
+
+    h2 {
+      margin: 0;
+
+      color: var(--color-text);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    p {
+      margin: 4px 0 0;
+
+      color: var(--color-text-muted);
+      font-size: 13px;
+    }
+  }
+
+  // ----------------------------------------
+  // Close Icon
+  // ----------------------------------------
+
+  &__close {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #ef4444;
+
+    cursor: pointer;
+
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+    }
+  }
+
+  // ----------------------------------------
+  // Profile
+  // ----------------------------------------
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 24px;
+
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__avatar {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  &__profile h3 {
+    margin: 0 0 4px;
+
+    color: var(--color-text);
+    font-size: 17px;
+    font-weight: 650;
+  }
+
+  &__profile span {
+    color: var(--color-text-muted);
+    font-size: 13px;
+  }
+
+  // ----------------------------------------
+  // Details
+  // ----------------------------------------
+
+  &__details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+
+    padding: 24px;
+  }
+
+  &__item {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__label {
+    color: #8f9bb3;
+
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+
+  &__value {
+    color: #e2e8f0;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ----------------------------------------
+  // Footer
+  // ----------------------------------------
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+
+    padding: 16px 24px;
+
+    border-top: 1px solid var(--color-border);
+  }
+
+  &__close-button {
+    min-height: 38px;
+
+    padding: 0 18px;
+
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    border-radius: 8px;
+
+    background: transparent;
+    color: #ef4444;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+    }
+  }
+}
+
+
+// ========================================
+// Dialog Animations
+// ========================================
+
+@keyframes manager-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes manager-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+// ========================================
+// Responsive
+// ========================================
+
+@media (max-width: 600px) {
+
+  .manager-dialog-backdrop {
+    padding: 16px;
+  }
+
+  .manager-dialog {
+
+    &__header {
+      padding: 20px;
+    }
+
+    &__profile {
+      padding: 20px;
+    }
+
+    &__details {
+      grid-template-columns: 1fr;
+      padding: 20px;
+      gap: 16px;
+    }
+
+    &__footer {
+      padding: 14px 20px;
+    }
+  }
+}
+
+/* ==========================================
+   Manager Status Dialog
+   ========================================== */
+
+.manager-status-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgb(15 23 42 / 45%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  animation: status-backdrop-in 0.18s ease-out;
+}
+
+.manager-status-dialog {
+  width: min(460px, 100%);
+
+  background: var(--surface-primary);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-md);
+
+  overflow: hidden;
+
+  animation: status-dialog-in 0.2s ease-out;
+}
+
+/* Header */
+
+.manager-status-dialog__header {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.manager-status-dialog__icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  color: var(--color-danger);
+  background: rgb(220 38 38 / 10%);
+}
+
+.manager-status-dialog__header > div:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.manager-status-dialog__header h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.manager-status-dialog__header p {
+  margin: 4px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+/* Close */
+
+.manager-status-dialog__close {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 0;
+  border-radius: 8px;
+
+  color: var(--text-muted);
+  background: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.manager-status-dialog__close:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+/* Body */
+
+.manager-status-dialog__body {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 22px;
+}
+
+.manager-status-dialog__avatar {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.manager-status-dialog__content {
+  min-width: 0;
+}
+
+.manager-status-dialog__content h3 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.manager-status-dialog__content > p {
+  margin: 4px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+.manager-status-dialog__message {
+  margin-top: 14px !important;
+
+  color: var(--text-secondary) !important;
+
+  line-height: 1.55;
+}
+
+/* Error */
+
+.manager-status-dialog__error {
+  margin: 0 22px 18px;
+
+  padding: 10px 12px;
+
+  border: 1px solid rgb(220 38 38 / 25%);
+  border-radius: 8px;
+
+  color: var(--color-danger);
+  background: rgb(220 38 38 / 8%);
+
+  font-size: 12px;
+}
+
+/* Actions */
+
+.manager-status-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 16px 22px 20px;
+
+  border-top: 1px solid var(--border-primary);
+}
+
+.manager-status-dialog__cancel,
+.manager-status-dialog__deactivate,
+.manager-status-dialog__restore {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 15px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Cancel */
+
+.manager-status-dialog__cancel {
+  border: 1px solid var(--border-secondary);
+
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+.manager-status-dialog__cancel:hover {
+  background: var(--bg-tertiary);
+}
+
+/* Deactivate */
+
+.manager-status-dialog__deactivate {
+  border: 0;
+
+  color: #ffffff;
+  background: var(--color-danger);
+}
+
+.manager-status-dialog__deactivate:hover {
+  filter: brightness(0.94);
+}
+
+/* Restore */
+
+.manager-status-dialog__restore {
+  border: 0;
+
+  color: #ffffff;
+  background: var(--color-success);
+}
+
+.manager-status-dialog__restore:hover {
+  filter: brightness(0.94);
+}
+
+/* Disabled */
+
+.manager-status-dialog__cancel:disabled,
+.manager-status-dialog__deactivate:disabled,
+.manager-status-dialog__restore:disabled,
+.manager-status-dialog__close:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+
+.manager-status-dialog .button-spinner {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgb(255 255 255 / 35%);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: status-spin 0.7s linear infinite;
+}
+
+/* Animations */
+
+@keyframes status-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes status-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes status-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 520px) {
+  .manager-status-backdrop {
+    padding: 14px;
+  }
+
+  .manager-status-dialog__header {
+    padding: 18px;
+  }
+
+  .manager-status-dialog__body {
+    padding: 20px 18px;
+  }
+
+  .manager-status-dialog__actions {
+    padding: 14px 18px 18px;
+  }
+}

@@ -1,0 +1,19 @@
+@use '../../../styles/variables' as vars;
+
+.manager-layout {
+  min-height: 100vh;
+  background: var(--bg-secondary);
+  transition:
+    background-color vars.$transition-normal;
+
+  &__main {
+    min-height: 100vh;
+    margin-left: vars.$sidebar-width;
+  }
+
+  &__content {
+    min-height: 100vh;
+    padding-top: vars.$header-height;
+    padding: calc(vars.$header-height + 24px) 24px 24px;
+  }
+}

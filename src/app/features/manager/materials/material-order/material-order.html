@@ -1,0 +1,324 @@
+<div class="material-order">
+
+  <!-- Toolbar -->
+  <div class="material-order__toolbar">
+
+    <div class="material-order__search">
+      <lucide-icon
+        [img]="Search"
+        [size]="18"
+      ></lucide-icon>
+
+      <input
+        type="text"
+        placeholder="Search materials..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearch()"
+      />
+    </div>
+
+    <div class="material-order__selection">
+      <div class="material-order__selection-info">
+        <lucide-icon
+          [img]="ShoppingCart"
+          [size]="18"
+        ></lucide-icon>
+
+        <span>
+          {{ selectedItemCount }}
+          {{ selectedItemCount === 1 ? 'material' : 'materials' }}
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="material-order__order-button"
+        [disabled]="!hasSelectedMaterials"
+        (click)="openReviewDialog()"
+      >
+        <lucide-icon
+          [img]="ShoppingCart"
+          [size]="17"
+        ></lucide-icon>
+
+        View Order
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="material-order__state material-order__state--loading">
+
+      <lucide-icon
+        [img]="RefreshCw"
+        [size]="22"
+        class="material-order__state-icon material-order__state-icon--spin"
+      ></lucide-icon>
+
+      <p>Loading materials...</p>
+
+    </div>
+  }
+
+
+  <!-- Error -->
+  @else if (errorMessage) {
+    <div class="material-order__state material-order__state--error">
+
+      <div class="material-order__state-icon">
+        <lucide-icon
+          [img]="TriangleAlert"
+          [size]="22"
+        ></lucide-icon>
+      </div>
+
+      <div class="material-order__state-content">
+        <h3>Unable to load materials</h3>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="material-order__retry-button"
+        (click)="retry()"
+      >
+        <lucide-icon
+          [img]="RefreshCw"
+          [size]="16"
+        ></lucide-icon>
+
+        Retry
+      </button>
+
+    </div>
+  }
+
+
+  <!-- Materials -->
+  @else if (filteredMaterials.length > 0) {
+
+    <div class="material-order__table-wrapper">
+
+      <div class="material-order__table">
+
+        <!-- Header -->
+        <div class="material-order__row material-order__row--header">
+
+          <div class="material-order__cell">
+            Material
+          </div>
+
+          <div class="material-order__cell">
+            Unit
+          </div>
+
+          <div class="material-order__cell">
+            Description
+          </div>
+
+          <div class="material-order__cell material-order__cell--quantity">
+            Quantity
+          </div>
+
+        </div>
+
+
+        <!-- Rows -->
+        @for (material of filteredMaterials; track material.id) {
+
+          <div class="material-order__row">
+
+            <!-- Material -->
+            <div class="material-order__cell material-order__cell--material">
+
+              <div class="material-order__material-icon">
+                <lucide-icon
+                  [img]="Package"
+                  [size]="19"
+                ></lucide-icon>
+              </div>
+
+              <div class="material-order__material-info">
+                <span class="material-order__material-name">
+                  {{ material.name }}
+                </span>
+
+                <span class="material-order__material-id">
+                  Material #{{ material.id }}
+                </span>
+              </div>
+
+            </div>
+
+
+            <!-- Unit -->
+            <div class="material-order__cell material-order__cell--unit">
+              {{ material.unit }}
+            </div>
+
+
+            <!-- Description -->
+            <div class="material-order__cell material-order__cell--description">
+
+              @if (material.description) {
+                {{ material.description }}
+              } @else {
+                <span class="material-order__empty-description">
+                  No description
+                </span>
+              }
+
+            </div>
+
+
+            <!-- Quantity -->
+            <div class="material-order__cell material-order__cell--quantity">
+
+              <div class="material-order__quantity">
+
+                <button
+                  type="button"
+                  class="material-order__quantity-button"
+                  [disabled]="getQuantity(material.id) === 0"
+                  (click)="decreaseQuantity(material)"
+                  aria-label="Decrease quantity"
+                >
+                  <lucide-icon
+                    [img]="Minus"
+                    [size]="15"
+                  ></lucide-icon>
+                </button>
+
+
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  [ngModel]="getQuantity(material.id)"
+                  (ngModelChange)="updateQuantity(material, $event)"
+                  aria-label="Material quantity"
+                />
+
+
+                <button
+                  type="button"
+                  class="material-order__quantity-button"
+                  (click)="increaseQuantity(material)"
+                  aria-label="Increase quantity"
+                >
+                  <lucide-icon
+                    [img]="Plus"
+                    [size]="15"
+                  ></lucide-icon>
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- Bottom summary -->
+    <div class="material-order__footer">
+
+      <div class="material-order__footer-info">
+
+        <span class="material-order__footer-label">
+          Selected materials
+        </span>
+
+        <strong>
+          {{ selectedItemCount }}
+        </strong>
+
+        <span class="material-order__footer-separator">
+          •
+        </span>
+
+        <span class="material-order__footer-label">
+          Total quantity
+        </span>
+
+        <strong>
+          {{ selectedTotalQuantity }}
+        </strong>
+
+      </div>
+
+      <button
+        type="button"
+        class="material-order__order-button material-order__order-button--footer"
+        [disabled]="!hasSelectedMaterials"
+        (click)="openReviewDialog()"
+      >
+        <lucide-icon
+          [img]="ShoppingCart"
+          [size]="17"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        View Order
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- Empty -->
+  @else {
+
+    <div class="material-order__state material-order__state--empty">
+
+      <div class="material-order__empty-icon">
+        <lucide-icon
+          [img]="Package"
+          [size]="30"
+        ></lucide-icon>
+      </div>
+
+      <h3>No materials found</h3>
+
+      @if (searchTerm.trim()) {
+        <p>
+          No materials match "{{ searchTerm }}".
+        </p>
+      } @else {
+        <p>
+          There are no active materials available for ordering.
+        </p>
+      }
+
+    </div>
+
+  }
+
+  @if (isReviewDialogOpen) {
+    <app-order-review-dialog
+      [items]="reviewItems"
+      [isSaving]="isPlacingOrder"
+      [errorMessage]="orderErrorMessage"
+      (closed)="closeReviewDialog()"
+      (confirmed)="placeOrder()"
+    ></app-order-review-dialog>
+  }
+
+  @if (isSuccessDialogOpen && placedOrderId !== null) {
+    <app-order-success-dialog
+      [orderId]="placedOrderId"
+      (closed)="closeSuccessDialog()"
+      (viewOrders)="viewMyOrders()"
+    ></app-order-success-dialog>
+  }
+
+</div>

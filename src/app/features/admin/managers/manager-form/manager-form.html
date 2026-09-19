@@ -1,0 +1,414 @@
+<div class="manager-form">
+
+  <section class="manager-form__card">
+
+    <!-- Header -->
+    <div class="manager-form__header">
+
+      <button
+        type="button"
+        class="manager-form__back"
+        (click)="goBack()"
+        aria-label="Back to managers"
+      >
+
+        <lucide-icon
+          [img]="ArrowLeft"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>
+          Back to Managers Lists
+        </span>
+
+      </button>
+
+
+      <div class="manager-form__title">
+
+        <div class="manager-form__icon">
+
+          <lucide-icon
+            [img]="UserPlus"
+            [size]="20"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+
+        </div>
+
+        <div>
+
+          <h2>Create Manager</h2>
+
+          <p>
+            Add a new manager to the construction
+            management system.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Error -->
+    @if (errorMessage) {
+
+      <div class="manager-form__error">
+        {{ errorMessage }}
+      </div>
+
+    }
+
+
+    <!-- Loading -->
+    @if (isLoading) {
+
+      <div class="manager-form__loading">
+
+        <span class="loading-spinner"></span>
+
+        <span>
+          Loading sites...
+        </span>
+
+      </div>
+
+    }
+
+
+    <!-- Form -->
+    <form
+      [formGroup]="managerForm"
+      (ngSubmit)="onSubmit()"
+      class="manager-form__body"
+    >
+
+      <!-- Name -->
+      <div class="form-field">
+
+        <label for="name">
+
+          Full Name
+
+          <span>*</span>
+
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter manager name"
+          autocomplete="name"
+        />
+
+        @if (isInvalid('name')) {
+
+          <small>
+
+            @if (
+              managerForm.controls.name.errors?.['required']
+            ) {
+              Name is required.
+            }
+
+            @if (
+              managerForm.controls.name.errors?.['minlength']
+            ) {
+              Name must be at least 2 characters.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Email -->
+      <div class="form-field">
+
+        <label for="email">
+
+          Email Address
+
+          <span>*</span>
+
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="manager@example.com"
+          autocomplete="email"
+        />
+
+        @if (isInvalid('email')) {
+
+          <small>
+
+            @if (
+              managerForm.controls.email.errors?.['required']
+            ) {
+              Email is required.
+            }
+
+            @if (
+              managerForm.controls.email.errors?.['email']
+            ) {
+              Enter a valid email address.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Phone -->
+      <div class="form-field">
+
+        <label for="phone">
+          Phone Number
+        </label>
+
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="9876543210"
+          maxlength="10"
+          autocomplete="tel"
+        />
+
+        @if (isInvalid('phone')) {
+
+          <small>
+            Enter a valid 10-digit Indian mobile number.
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Site -->
+      <div class="form-field">
+
+        <label for="site">
+
+          Assign Site
+
+          <span class="optional">
+            (Optional)
+          </span>
+
+        </label>
+
+
+        <div class="site-dropdown">
+
+          <!-- Trigger -->
+          <button
+            type="button"
+            class="site-dropdown__trigger"
+            [class.site-dropdown__trigger--open]="
+              isSiteDropdownOpen
+            "
+            (click)="toggleSiteDropdown()"
+            [disabled]="isLoading"
+          >
+
+            <span
+              [class.site-dropdown__placeholder]="
+                !selectedSite
+              "
+            >
+              {{ selectedSiteName }}
+            </span>
+
+            <lucide-icon
+              [img]="ChevronDown"
+              [size]="17"
+              [strokeWidth]="1.8"
+              [class.site-dropdown__arrow--open]="
+                isSiteDropdownOpen
+              "
+            ></lucide-icon>
+
+          </button>
+
+
+          <!-- Dropdown -->
+          @if (isSiteDropdownOpen) {
+
+            <div class="site-dropdown__menu">
+
+              <!-- No Site -->
+              <button
+                type="button"
+                class="site-dropdown__option"
+                [class.site-dropdown__option--selected]="
+                  !selectedSite
+                "
+                (click)="selectSite(null)"
+              >
+
+                <span>
+                  No site assigned
+                </span>
+
+                @if (!selectedSite) {
+
+                  <lucide-icon
+                    [img]="Check"
+                    [size]="16"
+                    [strokeWidth]="2"
+                  ></lucide-icon>
+
+                }
+
+              </button>
+
+
+              <!-- Available Sites -->
+              @for (
+                site of availableSites;
+                track site.id
+              ) {
+
+                <button
+                  type="button"
+                  class="site-dropdown__option"
+                  [class.site-dropdown__option--selected]="
+                    selectedSite?.id === site.id
+                  "
+                  (click)="selectSite(site)"
+                >
+
+                  <span>
+                    {{ site.name }}
+                  </span>
+
+                  @if (
+                    selectedSite?.id === site.id
+                  ) {
+
+                    <lucide-icon
+                      [img]="Check"
+                      [size]="16"
+                      [strokeWidth]="2"
+                    ></lucide-icon>
+
+                  }
+
+                </button>
+
+              }
+
+
+              <!-- Empty -->
+              @if (availableSites.length === 0) {
+
+                <div class="site-dropdown__empty">
+                  No available sites
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- Site Hint -->
+        @if (
+          !isLoading &&
+          availableSites.length === 0
+        ) {
+
+          <p class="form-field__hint">
+            No active unassigned sites are currently available.
+          </p>
+
+        }
+
+      </div>
+
+
+      <!-- Password Information -->
+      <div class="manager-form__password-info">
+
+        <div class="manager-form__password-indicator">
+
+          <span></span>
+
+        </div>
+
+        <div>
+
+          <strong>
+            Default password
+          </strong>
+
+          <p>
+            A default password will be generated automatically.
+            The manager should change it after the first login.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- Actions -->
+      <div class="manager-form__actions">
+
+        <button
+          type="button"
+          class="manager-form__cancel"
+          (click)="goBack()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="submit"
+          class="manager-form__submit"
+          [disabled]="isSaving || isLoading"
+        >
+
+          @if (isSaving) {
+
+            <span class="button-spinner"></span>
+
+            <span>
+              Creating...
+            </span>
+
+          } @else {
+
+            <span>
+              Create Manager
+            </span>
+
+          }
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</div>

@@ -1,0 +1,204 @@
+<aside class="sidebar">
+
+  <!-- Brand -->
+  <div class="sidebar__brand">
+
+    <div class="sidebar__logo">
+      CM
+    </div>
+
+    <div class="sidebar__brand-text">
+      <strong>Construction</strong>
+      <span>Management</span>
+    </div>
+
+  </div>
+
+
+  <!-- Navigation -->
+  <nav class="sidebar__nav">
+
+    <!-- Dashboard -->
+    <a
+      [routerLink]="isAdmin ? '/admin/dashboard' : '/manager/dashboard'"
+      routerLinkActive="sidebar__link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="sidebar__link"
+    >
+      <lucide-icon
+        [img]="LayoutDashboard"
+        [size]="18"
+        [strokeWidth]="1.8"
+      ></lucide-icon>
+
+      <span>Dashboard</span>
+    </a>
+
+
+    <!-- ================================ -->
+    <!-- Admin Navigation -->
+    <!-- ================================ -->
+
+    @if (isAdmin) {
+
+      <div class="sidebar__section">
+        <span>Management</span>
+      </div>
+
+
+      <!-- Managers -->
+      <a
+        routerLink="/admin/managers"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <lucide-icon
+          [img]="Users"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Managers</span>
+      </a>
+
+
+      <!-- Sites -->
+      <a
+        routerLink="/admin/sites"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <lucide-icon
+          [img]="Building2"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Sites</span>
+      </a>
+
+
+      <!-- Materials -->
+      <a
+        routerLink="/admin/materials"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <lucide-icon
+          [img]="Package"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Materials</span>
+      </a>
+
+
+      <!-- Orders -->
+      <a
+        routerLink="/admin/orders"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <lucide-icon
+          [img]="ClipboardList"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Orders</span>
+      </a>
+
+    }
+
+
+    <!-- ================================ -->
+    <!-- Manager Navigation -->
+    <!-- ================================ -->
+
+    @if (isManager) {
+
+      <div class="sidebar__section">
+        <span>Management</span>
+      </div>
+
+
+      <!-- Materials -->
+      <a
+        routerLink="/manager/materials"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <lucide-icon
+          [img]="Package"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Materials</span>
+      </a>
+
+
+      <!-- Orders -->
+      <a
+        routerLink="/manager/orders"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <lucide-icon
+          [img]="ClipboardList"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+
+        <span>Orders</span>
+      </a>
+
+    }
+
+
+    <!-- ================================ -->
+    <!-- System -->
+    <!-- ================================ -->
+
+    <div class="sidebar__section">
+      <span>System</span>
+    </div>
+
+
+    <a
+      href="#"
+      class="sidebar__link"
+    >
+      <lucide-icon
+        [img]="Settings"
+        [size]="18"
+        [strokeWidth]="1.8"
+      ></lucide-icon>
+
+      <span>Settings</span>
+    </a>
+
+  </nav>
+
+
+  <!-- Footer -->
+  <div class="sidebar__footer">
+
+    <button
+      type="button"
+      class="sidebar__logout"
+      (click)="logout()"
+    >
+      <lucide-icon
+        [img]="LogOut"
+        [size]="18"
+        [strokeWidth]="1.8"
+      ></lucide-icon>
+
+      <span>Logout</span>
+    </button>
+
+  </div>
+
+</aside>

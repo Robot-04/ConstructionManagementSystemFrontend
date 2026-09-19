@@ -1,0 +1,391 @@
+.manager-status-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgb(15 23 42 / 42%);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  animation: status-backdrop-in 0.18s ease-out;
+}
+
+
+.manager-status-dialog {
+  width: min(460px, 100%);
+
+  background: var(--surface-primary);
+
+  border: 1px solid var(--border-primary);
+
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-md);
+
+  overflow: hidden;
+
+  animation: status-dialog-in 0.2s ease-out;
+}
+
+
+/* ==========================================
+   Header
+   ========================================== */
+
+.manager-status-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  padding: 22px 24px;
+
+  border-bottom: 1px solid var(--border-primary);
+}
+
+
+.manager-status-dialog__title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+
+.manager-status-dialog__icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  color: var(--color-danger);
+
+  background: color-mix(
+    in srgb,
+    var(--color-danger) 10%,
+    transparent
+  );
+}
+
+
+.manager-status-dialog__icon--restore {
+  color: var(--color-success);
+
+  background: color-mix(
+    in srgb,
+    var(--color-success) 10%,
+    transparent
+  );
+}
+
+
+.manager-status-dialog__title h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+.manager-status-dialog__title p {
+  margin: 4px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+
+.manager-status-dialog__close {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 0;
+  border-radius: 8px;
+
+  color: var(--text-muted);
+
+  background: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.manager-status-dialog__close:hover {
+  color: var(--text-primary);
+
+  background: var(--bg-tertiary);
+}
+
+
+/* ==========================================
+   Body
+   ========================================== */
+
+.manager-status-dialog__body {
+  padding: 24px;
+}
+
+
+.manager-status-dialog__warning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 13px;
+
+  padding: 15px;
+
+  border: 1px solid var(--border-primary);
+
+  border-radius: 10px;
+
+  background: var(--bg-secondary);
+}
+
+
+.manager-status-dialog__warning > lucide-icon {
+  flex-shrink: 0;
+
+  margin-top: 1px;
+
+  color: var(--color-warning);
+}
+
+
+.manager-status-dialog__warning strong {
+  display: block;
+
+  color: var(--text-primary);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.manager-status-dialog__warning p {
+  margin: 6px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* ==========================================
+   Error
+   ========================================== */
+
+.manager-status-dialog__error {
+  margin-top: 14px;
+
+  padding: 11px 13px;
+
+  border: 1px solid color-mix(
+    in srgb,
+    var(--color-danger) 25%,
+    transparent
+  );
+
+  border-radius: 8px;
+
+  color: var(--color-danger);
+
+  background: color-mix(
+    in srgb,
+    var(--color-danger) 8%,
+    transparent
+  );
+
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   Actions
+   ========================================== */
+
+.manager-status-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 24px 22px;
+}
+
+
+.manager-status-dialog__cancel,
+.manager-status-dialog__confirm {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 16px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.manager-status-dialog__cancel {
+  border: 1px solid var(--border-secondary);
+
+  color: var(--text-secondary);
+
+  background: transparent;
+}
+
+
+.manager-status-dialog__cancel:hover {
+  background: var(--bg-tertiary);
+}
+
+
+.manager-status-dialog__confirm {
+  border: 0;
+
+  color: #ffffff;
+
+  background: var(--color-danger);
+}
+
+
+.manager-status-dialog__confirm:hover {
+  filter: brightness(0.92);
+}
+
+
+.manager-status-dialog__confirm--restore {
+  background: var(--color-success);
+}
+
+
+.manager-status-dialog__confirm--restore:hover {
+  filter: brightness(0.92);
+}
+
+
+.manager-status-dialog__confirm:disabled,
+.manager-status-dialog__cancel:disabled,
+.manager-status-dialog__close:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================
+   Spinner
+   ========================================== */
+
+.button-spinner {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgb(255 255 255 / 35%);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: status-spin 0.7s linear infinite;
+}
+
+
+/* ==========================================
+   Animations
+   ========================================== */
+
+@keyframes status-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes status-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes status-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ==========================================
+   Responsive
+   ========================================== */
+
+@media (max-width: 520px) {
+
+  .manager-status-dialog__backdrop {
+    padding: 14px;
+  }
+
+  .manager-status-dialog__header {
+    padding: 20px;
+  }
+
+  .manager-status-dialog__body {
+    padding: 20px;
+  }
+
+  .manager-status-dialog__actions {
+    padding: 0 20px 20px;
+  }
+
+  .manager-status-dialog__cancel,
+  .manager-status-dialog__confirm {
+    flex: 1;
+  }
+}

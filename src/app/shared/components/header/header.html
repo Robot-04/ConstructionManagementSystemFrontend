@@ -1,0 +1,63 @@
+<header class="header">
+
+  <div class="header__left">
+
+    <button
+      type="button"
+      class="header__menu-button"
+      aria-label="Toggle sidebar"
+    >
+      <lucide-icon
+        [img]="Menu"
+        [size]="20"
+        [strokeWidth]="1.8"
+      ></lucide-icon>
+    </button>
+
+    <div class="header__title">
+      <h1>{{ pageTitle }}</h1>
+      <span>{{ pageSubtitle }}</span>
+    </div>
+
+  </div>
+
+
+  <div class="header__actions">
+
+    <button
+      type="button"
+      class="header__action"
+      title="Toggle theme"
+      aria-label="Toggle theme"
+      (click)="toggleTheme()"
+    >
+      @if (currentTheme === 'dark') {
+        <lucide-icon
+          [img]="Sun"
+          [size]="19"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      } @else {
+        <lucide-icon
+          [img]="Moon"
+          [size]="19"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      }
+    </button>
+
+
+    <div class="header__profile">
+      <div class="header__avatar">
+        {{ userInitial }}
+      </div>
+
+      <div class="header__user">
+        <strong>{{ userName }}</strong>
+        <span>{{ userRole }}</span>
+      </div>
+    </div>
+
+  </div>
+
+</header>

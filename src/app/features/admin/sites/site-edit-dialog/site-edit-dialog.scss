@@ -1,0 +1,442 @@
+.site-edit-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--modal-backdrop);
+  backdrop-filter: blur(4px);
+
+  animation: site-edit-backdrop-in 160ms ease-out;
+}
+
+.site-edit-dialog {
+  width: 100%;
+  max-width: 620px;
+  max-height: calc(100vh - 48px);
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--surface-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-md);
+
+  overflow: hidden;
+
+  animation: site-edit-dialog-in 180ms ease-out;
+}
+
+
+/* =========================================
+   Header
+========================================= */
+
+.site-edit-dialog__header {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 20px 24px;
+
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.site-edit-dialog__icon {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.site-edit-dialog__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.site-edit-dialog__heading h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.site-edit-dialog__heading p {
+  margin: 4px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+}
+
+.site-edit-dialog__close {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 8px;
+
+  color: var(--text-muted);
+  background: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background 150ms ease;
+}
+
+.site-edit-dialog__close:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+.site-edit-dialog__close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   Form
+========================================= */
+
+.site-edit-dialog__form {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 0;
+}
+
+.site-edit-dialog__body {
+  padding: 24px;
+
+  overflow-y: auto;
+}
+
+.site-edit-dialog__field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-bottom: 18px;
+}
+
+.site-edit-dialog__field:last-child {
+  margin-bottom: 0;
+}
+
+.site-edit-dialog__field label {
+  color: var(--text-secondary);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.site-edit-dialog__field label span {
+  margin-left: 2px;
+
+  color: var(--color-danger);
+}
+
+.site-edit-dialog__field input,
+.site-edit-dialog__field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+
+  outline: none;
+
+  color: var(--text-primary);
+  background: var(--surface-primary);
+
+  font-family: inherit;
+  font-size: 13px;
+
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.site-edit-dialog__field input {
+  height: 40px;
+
+  padding: 0 12px;
+}
+
+.site-edit-dialog__field textarea {
+  min-height: 82px;
+
+  padding: 10px 12px;
+
+  resize: vertical;
+}
+
+.site-edit-dialog__field input::placeholder,
+.site-edit-dialog__field textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.site-edit-dialog__field input:focus,
+.site-edit-dialog__field textarea:focus {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px var(--color-primary-light);
+}
+
+.site-edit-dialog__field input.ng-invalid.ng-touched,
+.site-edit-dialog__field textarea.ng-invalid.ng-touched {
+  border-color: var(--color-danger);
+}
+
+.site-edit-dialog__field-error {
+  color: var(--color-danger);
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   Location Grid
+========================================= */
+
+.site-edit-dialog__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+}
+
+
+/* =========================================
+   Error
+========================================= */
+
+.site-edit-dialog__error {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-top: 18px;
+  padding: 12px 14px;
+
+  border: 1px solid var(--modal-error-border);
+  border-radius: 9px;
+
+  color: var(--color-danger);
+  background: var(--modal-error-bg);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.site-edit-dialog__error lucide-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+
+/* =========================================
+   Footer
+========================================= */
+
+.site-edit-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 16px 24px;
+
+  border-top: 1px solid var(--border-primary);
+
+  background: var(--surface-secondary);
+}
+
+.site-edit-dialog__button {
+  min-height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 16px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    opacity 150ms ease;
+}
+
+.site-edit-dialog__button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* Cancel */
+
+.site-edit-dialog__button--cancel {
+  color: var(--text-secondary);
+
+  background: var(--surface-primary);
+  border-color: var(--border-secondary);
+}
+
+.site-edit-dialog__button--cancel:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+
+/* Primary */
+
+.site-edit-dialog__button--primary {
+  color: #ffffff;
+  background: var(--color-primary);
+}
+
+.site-edit-dialog__button--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+
+/* =========================================
+   Spinner
+========================================= */
+
+.site-edit-dialog__spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgb(255 255 255 / 40%);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: site-edit-spin 700ms linear infinite;
+}
+
+
+/* =========================================
+   Animations
+========================================= */
+
+@keyframes site-edit-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes site-edit-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes site-edit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 600px) {
+  .site-edit-dialog__backdrop {
+    padding: 16px;
+  }
+
+  .site-edit-dialog {
+    max-height: calc(100vh - 32px);
+  }
+
+  .site-edit-dialog__header {
+    padding: 18px;
+  }
+
+  .site-edit-dialog__body {
+    padding: 20px 18px;
+  }
+
+  .site-edit-dialog__footer {
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-edit-dialog__grid {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+  .site-edit-dialog__footer {
+    flex-direction: column-reverse;
+  }
+
+  .site-edit-dialog__button {
+    width: 100%;
+  }
+}

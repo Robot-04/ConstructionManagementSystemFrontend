@@ -1,0 +1,226 @@
+<div class="material-edit-dialog__backdrop">
+  <section
+    class="material-edit-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="material-edit-title"
+  >
+
+    <!-- Header -->
+    <header class="material-edit-dialog__header">
+
+      <div class="material-edit-dialog__title">
+
+        <div class="material-edit-dialog__icon">
+          <lucide-icon
+            [img]="Package"
+            [size]="21"
+            [strokeWidth]="1.8"
+          ></lucide-icon>
+        </div>
+
+        <div>
+          <h2 id="material-edit-title">Edit Material</h2>
+
+          <p>
+            Update material information
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="material-edit-dialog__close"
+        aria-label="Close dialog"
+        (click)="close()"
+        [disabled]="isSaving"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </header>
+
+
+    <!-- Form -->
+    <form
+      class="material-edit-dialog__form"
+      [formGroup]="materialForm"
+      (ngSubmit)="save()"
+    >
+
+      <!-- Material Name -->
+      <div class="material-edit-dialog__field">
+
+        <label for="material-name">
+          Material Name
+          <span>*</span>
+        </label>
+
+        <input
+          id="material-name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter material name"
+          autocomplete="off"
+          [class.material-edit-dialog__input--error]="
+            nameControl.invalid &&
+            (nameControl.touched || nameControl.dirty)
+          "
+        />
+
+        @if (
+          nameControl.invalid &&
+          (nameControl.touched || nameControl.dirty)
+        ) {
+          <div class="material-edit-dialog__field-error">
+            @if (nameControl.errors?.['required']) {
+              <span>Material name is required.</span>
+            } @else if (nameControl.errors?.['maxlength']) {
+              <span>Material name cannot exceed 150 characters.</span>
+            }
+          </div>
+        }
+
+      </div>
+
+
+      <!-- Unit -->
+      <div class="material-edit-dialog__field">
+
+        <label for="material-unit">
+          Unit
+          <span>*</span>
+        </label>
+
+        <input
+          id="material-unit"
+          type="text"
+          formControlName="unit"
+          placeholder="e.g. Pcs, Kg, Bags, Tons"
+          autocomplete="off"
+          [class.material-edit-dialog__input--error]="
+            unitControl.invalid &&
+            (unitControl.touched || unitControl.dirty)
+          "
+        />
+
+        @if (
+          unitControl.invalid &&
+          (unitControl.touched || unitControl.dirty)
+        ) {
+          <div class="material-edit-dialog__field-error">
+            @if (unitControl.errors?.['required']) {
+              <span>Unit is required.</span>
+            } @else if (unitControl.errors?.['maxlength']) {
+              <span>Unit cannot exceed 30 characters.</span>
+            }
+          </div>
+        }
+
+      </div>
+
+
+      <!-- Description -->
+      <div class="material-edit-dialog__field">
+
+        <label for="material-description">
+          Description
+        </label>
+
+        <textarea
+          id="material-description"
+          rows="4"
+          formControlName="description"
+          placeholder="Enter material description"
+          [class.material-edit-dialog__input--error]="
+            descriptionControl.invalid &&
+            (descriptionControl.touched || descriptionControl.dirty)
+          "
+        ></textarea>
+
+        <div class="material-edit-dialog__field-meta">
+          <span>
+            Optional
+          </span>
+
+          <span>
+            {{ descriptionControl.value.length }}/1000
+          </span>
+        </div>
+
+        @if (
+          descriptionControl.invalid &&
+          (descriptionControl.touched || descriptionControl.dirty)
+        ) {
+          <div class="material-edit-dialog__field-error">
+            @if (descriptionControl.errors?.['maxlength']) {
+              <span>
+                Description cannot exceed 1000 characters.
+              </span>
+            }
+          </div>
+        }
+
+      </div>
+
+
+      <!-- API Error -->
+      @if (errorMessage) {
+        <div class="material-edit-dialog__error">
+
+          <lucide-icon
+            [img]="TriangleAlert"
+            [size]="17"
+            [strokeWidth]="1.9"
+          ></lucide-icon>
+
+          <span>{{ errorMessage }}</span>
+
+        </div>
+      }
+
+
+      <!-- Footer -->
+      <footer class="material-edit-dialog__footer">
+
+        <button
+          type="button"
+          class="material-edit-dialog__cancel-button"
+          (click)="close()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="material-edit-dialog__save-button"
+          [disabled]="isSaving"
+        >
+
+          @if (isSaving) {
+            <span class="material-edit-dialog__spinner"></span>
+            <span>Saving...</span>
+          } @else {
+            <lucide-icon
+              [img]="Save"
+              [size]="17"
+              [strokeWidth]="2"
+            ></lucide-icon>
+
+            <span>Save Changes</span>
+          }
+
+        </button>
+
+      </footer>
+
+    </form>
+
+  </section>
+</div>

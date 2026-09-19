@@ -1,0 +1,299 @@
+@use '../../../../styles/variables' as vars;
+@use '../../../../styles/mixins' as mixins;
+
+.login-page {
+  position: relative;
+
+  min-height: 100vh;
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: var(--bg-secondary);
+
+  transition:
+    background-color vars.$transition-normal;
+
+
+  // ========================================
+  // Background decoration
+  // ========================================
+
+  &__background {
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    top: -250px;
+    right: -150px;
+
+    border-radius: 50%;
+
+    background: var(--color-primary-light);
+
+    opacity: 0.7;
+
+    filter: blur(2px);
+
+    pointer-events: none;
+  }
+}
+
+
+// ==========================================
+// Login Card
+// ==========================================
+
+.login-card {
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 440px);
+
+  padding: 40px;
+
+  background: var(--surface-primary);
+
+  border: 1px solid var(--border-primary);
+
+  border-radius: vars.$radius-xl;
+
+  box-shadow: var(--shadow-md);
+
+  transition:
+    background-color vars.$transition-normal,
+    border-color vars.$transition-normal,
+    box-shadow vars.$transition-normal;
+
+
+  // ========================================
+  // Header
+  // ========================================
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin-bottom: 32px;
+  }
+
+
+  &__logo {
+    @include mixins.flex-center;
+
+    flex-shrink: 0;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: vars.$radius-md;
+
+    background: var(--color-primary);
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+
+  h1 {
+    margin-bottom: 4px;
+
+    color: var(--text-primary);
+
+    font-size: vars.$font-size-xl;
+    font-weight: 700;
+  }
+
+
+  &__header p {
+    color: var(--text-secondary);
+
+    font-size: vars.$font-size-sm;
+  }
+
+
+  // ========================================
+  // Error
+  // ========================================
+
+  &__error {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+
+    border: 1px solid color-mix(
+      in srgb,
+      var(--color-danger) 30%,
+      transparent
+    );
+
+    border-radius: vars.$radius-md;
+
+    background: color-mix(
+      in srgb,
+      var(--color-danger) 10%,
+      transparent
+    );
+
+    color: var(--color-danger);
+
+    font-size: vars.$font-size-sm;
+  }
+
+
+  // ========================================
+  // Footer
+  // ========================================
+
+  &__footer {
+    margin-top: 24px;
+
+    color: var(--text-muted);
+
+    font-size: vars.$font-size-xs;
+
+    text-align: center;
+  }
+}
+
+
+// ==========================================
+// Form
+// ==========================================
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+
+// ==========================================
+// Form Field
+// ==========================================
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+
+  label {
+    color: var(--text-primary);
+
+    font-size: vars.$font-size-sm;
+    font-weight: 600;
+  }
+
+
+  input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background: var(--bg-primary);
+
+    color: var(--text-primary);
+
+    border: 1px solid var(--border-primary);
+
+    border-radius: vars.$radius-md;
+
+    outline: none;
+
+    transition:
+      border-color vars.$transition-fast,
+      box-shadow vars.$transition-fast,
+      background-color vars.$transition-normal;
+
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+
+    &:focus {
+      border-color: var(--color-primary);
+
+      box-shadow:
+        0 0 0 3px
+        color-mix(
+          in srgb,
+          var(--color-primary) 15%,
+          transparent
+        );
+    }
+  }
+
+
+  &__error {
+    color: var(--color-danger);
+
+    font-size: vars.$font-size-xs;
+  }
+}
+
+
+// ==========================================
+// Login Button
+// ==========================================
+
+.login-button {
+  width: 100%;
+
+  margin-top: 4px;
+
+  padding: 13px 20px;
+
+  border-radius: vars.$radius-md;
+
+  background: var(--color-primary);
+
+  color: #ffffff;
+
+  font-weight: 600;
+
+  transition:
+    background-color vars.$transition-fast,
+    transform vars.$transition-fast,
+    opacity vars.$transition-fast;
+
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+
+    transform: translateY(-1px);
+  }
+
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+
+  &:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.65;
+  }
+}
+
+
+// ==========================================
+// Responsive
+// ==========================================
+
+@include mixins.respond-to(sm) {
+  .login-card {
+    padding: 44px;
+  }
+}

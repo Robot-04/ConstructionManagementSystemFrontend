@@ -1,0 +1,36 @@
+@use './variables' as vars;
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card {
+  padding: 20px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: vars.$radius-lg;
+  box-shadow: var(--shadow-sm);
+}

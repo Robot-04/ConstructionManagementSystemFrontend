@@ -1,0 +1,372 @@
+@use '../../../../../styles/variables' as vars;
+
+// ========================================
+// Backdrop
+// ========================================
+
+.order-success-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--modal-backdrop);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  animation: order-success-dialog-backdrop-in 0.18s ease;
+}
+
+// ========================================
+// Dialog
+// ========================================
+
+.order-success-dialog {
+  width: 100%;
+  max-width: 480px;
+
+  background: var(--surface-primary);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-md);
+
+  overflow: hidden;
+
+  animation: order-success-dialog-in 0.2s ease;
+}
+
+// ========================================
+// Header
+// ========================================
+
+.order-success-dialog__header {
+  min-height: 72px;
+
+  padding: 14px 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.order-success-dialog__title {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.order-success-dialog__title-icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--color-success);
+  background: rgb(5 150 105 / 10%);
+
+  border-radius: 10px;
+}
+
+.order-success-dialog__title h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.order-success-dialog__title span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+// ========================================
+// Close
+// ========================================
+
+.order-success-dialog__close {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  color: var(--text-muted);
+  background: transparent;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background-color vars.$transition-fast,
+    color vars.$transition-fast,
+    border-color vars.$transition-fast;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border-color: var(--border-primary);
+  }
+}
+
+// ========================================
+// Content
+// ========================================
+
+.order-success-dialog__content {
+  padding: 28px 20px;
+}
+
+// ========================================
+// Success
+// ========================================
+
+.order-success-dialog__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.order-success-dialog__success-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  color: var(--color-success);
+  background: rgb(5 150 105 / 10%);
+
+  border: 1px solid rgb(5 150 105 / 18%);
+  border-radius: 50%;
+}
+
+.order-success-dialog__success h3 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.order-success-dialog__success p {
+  max-width: 360px;
+
+  margin: 8px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+// ========================================
+// Order Number
+// ========================================
+
+.order-success-dialog__order-number {
+  min-width: 150px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  margin-top: 20px;
+  padding: 11px 18px;
+
+  background: var(--surface-secondary);
+
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+}
+
+.order-success-dialog__order-number span {
+  color: var(--text-muted);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.order-success-dialog__order-number strong {
+  color: var(--color-primary);
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+// ========================================
+// Footer
+// ========================================
+
+.order-success-dialog__footer {
+  padding: 14px 20px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 8px;
+
+  border-top: 1px solid var(--border-primary);
+}
+
+.order-success-dialog__done,
+.order-success-dialog__orders {
+  min-height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color vars.$transition-fast,
+    color vars.$transition-fast,
+    border-color vars.$transition-fast;
+}
+
+.order-success-dialog__done {
+  min-width: 72px;
+
+  color: var(--text-secondary);
+  background: var(--surface-secondary);
+
+  border: 1px solid var(--border-primary);
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border-color: var(--border-secondary);
+  }
+}
+
+.order-success-dialog__orders {
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: 1px solid var(--color-primary);
+
+  &:hover {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+}
+
+// ========================================
+// Responsive
+// ========================================
+
+@media (max-width: 600px) {
+  .order-success-dialog__backdrop {
+    padding: 12px;
+  }
+
+  .order-success-dialog {
+    border-radius: 14px;
+  }
+
+  .order-success-dialog__header {
+    padding: 13px 16px;
+  }
+
+  .order-success-dialog__content {
+    padding: 24px 16px;
+  }
+
+  .order-success-dialog__footer {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-success-dialog__footer {
+    flex-direction: column-reverse;
+
+    .order-success-dialog__done,
+    .order-success-dialog__orders {
+      width: 100%;
+    }
+  }
+}
+
+// ========================================
+// Animations
+// ========================================
+
+@keyframes order-success-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes order-success-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

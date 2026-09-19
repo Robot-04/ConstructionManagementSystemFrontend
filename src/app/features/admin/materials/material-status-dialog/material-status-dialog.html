@@ -1,0 +1,196 @@
+<div class="material-status-dialog__backdrop">
+
+  <section
+    class="material-status-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="material-status-title"
+  >
+
+    <!-- Header -->
+    <header class="material-status-dialog__header">
+
+      <div class="material-status-dialog__title">
+
+        <div
+          class="material-status-dialog__icon"
+          [class.material-status-dialog__icon--danger]="isActive"
+          [class.material-status-dialog__icon--success]="!isActive"
+        >
+          @if (isActive) {
+            <lucide-icon
+              [img]="Ban"
+              [size]="21"
+              [strokeWidth]="1.8"
+            ></lucide-icon>
+          } @else {
+            <lucide-icon
+              [img]="RotateCcw"
+              [size]="21"
+              [strokeWidth]="1.8"
+            ></lucide-icon>
+          }
+        </div>
+
+        <div>
+          <h2 id="material-status-title">
+            {{ actionTitle }}
+          </h2>
+
+          <p>
+            Change material availability status
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="material-status-dialog__close"
+        aria-label="Close dialog"
+        (click)="close()"
+        [disabled]="isSaving"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="18"
+          [strokeWidth]="1.8"
+        ></lucide-icon>
+      </button>
+
+    </header>
+
+
+    <!-- Content -->
+    <div class="material-status-dialog__content">
+
+      <div class="material-status-dialog__material">
+
+        <div class="material-status-dialog__material-icon">
+          @if (isActive) {
+            <lucide-icon
+              [img]="Ban"
+              [size]="20"
+              [strokeWidth]="1.8"
+            ></lucide-icon>
+          } @else {
+            <lucide-icon
+              [img]="RotateCcw"
+              [size]="20"
+              [strokeWidth]="1.8"
+            ></lucide-icon>
+          }
+        </div>
+
+        <div class="material-status-dialog__material-info">
+
+          <strong>
+            {{ material.name }}
+          </strong>
+
+          <span>
+            Material #{{ material.id }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="material-status-dialog__message">
+
+        <p>
+          {{ actionDescription }}
+        </p>
+
+        @if (isActive) {
+          <p>
+            Deactivated materials will not be available for new material
+            orders.
+          </p>
+        } @else {
+          <p>
+            Activating this material will make it available for new material
+            orders.
+          </p>
+        }
+
+      </div>
+
+
+      @if (errorMessage) {
+
+        <div class="material-status-dialog__error">
+
+          <lucide-icon
+            [img]="TriangleAlert"
+            [size]="17"
+            [strokeWidth]="1.9"
+          ></lucide-icon>
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="material-status-dialog__footer">
+
+      <button
+        type="button"
+        class="material-status-dialog__cancel-button"
+        (click)="close()"
+        [disabled]="isSaving"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="material-status-dialog__confirm-button"
+        [class.material-status-dialog__confirm-button--danger]="isActive"
+        [class.material-status-dialog__confirm-button--success]="!isActive"
+        (click)="confirm()"
+        [disabled]="isSaving"
+      >
+
+        @if (isSaving) {
+          <span class="material-status-dialog__spinner"></span>
+
+          <span>
+            {{ isActive ? 'Deactivating...' : 'Activating...' }}
+          </span>
+        } @else {
+
+          @if (isActive) {
+            <lucide-icon
+              [img]="Ban"
+              [size]="17"
+              [strokeWidth]="2"
+            ></lucide-icon>
+          } @else {
+            <lucide-icon
+              [img]="RotateCcw"
+              [size]="17"
+              [strokeWidth]="2"
+            ></lucide-icon>
+          }
+
+          <span>
+            {{ actionButtonText }}
+          </span>
+        }
+
+      </button>
+
+    </footer>
+
+  </section>
+
+</div>

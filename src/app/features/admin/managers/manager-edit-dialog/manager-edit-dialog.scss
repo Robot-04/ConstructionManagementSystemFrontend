@@ -1,0 +1,600 @@
+/* =========================================================
+   MANAGER EDIT DIALOG
+   ========================================================= */
+
+.manager-edit-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--modal-backdrop);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  animation: dialog-backdrop-in 0.18s ease-out;
+}
+
+
+/* =========================================================
+   DIALOG
+   ========================================================= */
+
+.manager-edit-dialog {
+  width: min(720px, 100%);
+  max-height: calc(100vh - 48px);
+
+  overflow-y: auto;
+
+  background: var(--surface-primary);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border-primary);
+  border-radius: 16px;
+
+  box-shadow: var(--shadow-md);
+
+  animation: dialog-in 0.2s ease-out;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.manager-edit-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 24px 28px;
+
+  border-bottom: 1px solid var(--border-primary);
+}
+
+
+.manager-edit-dialog__title {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.manager-edit-dialog__icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+
+.manager-edit-dialog__title h2 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+.manager-edit-dialog__title p {
+  margin: 5px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.manager-edit-dialog__close {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 8px;
+
+  color: var(--text-muted);
+  background: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.manager-edit-dialog__close:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.manager-edit-dialog__error {
+  margin: 18px 28px 0;
+
+  padding: 12px 14px;
+
+  border: 1px solid var(--modal-error-border);
+  border-radius: 8px;
+
+  color: var(--color-danger);
+  background: var(--modal-error-bg);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.manager-edit-dialog__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 24px;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid var(--border-secondary);
+  border-top-color: var(--color-primary);
+
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+.manager-edit-dialog__body {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 24px;
+
+  padding: 28px;
+}
+
+
+/* =========================================================
+   FORM FIELDS
+   ========================================================= */
+
+.form-field {
+  min-width: 0;
+}
+
+
+.form-field label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: var(--text-primary);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.form-field label > span:not(.optional) {
+  color: var(--color-danger);
+}
+
+
+.form-field .optional {
+  margin-left: 4px;
+
+  color: var(--text-muted);
+
+  font-weight: 400;
+}
+
+
+.form-field input {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 12px 13px;
+
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+
+  outline: none;
+
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+.form-field input::placeholder {
+  color: var(--text-muted);
+}
+
+
+.form-field input:focus {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px rgb(79 70 229 / 12%);
+}
+
+
+.form-field small {
+  display: block;
+
+  margin-top: 6px;
+
+  color: var(--color-danger);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   SITE DROPDOWN
+   ========================================================= */
+
+.site-dropdown {
+  position: relative;
+}
+
+
+.site-dropdown__trigger {
+  width: 100%;
+  min-height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 13px;
+
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+.site-dropdown__trigger:hover {
+  border-color: var(--border-secondary);
+}
+
+
+.site-dropdown__trigger--open {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px rgb(79 70 229 / 12%);
+}
+
+
+.site-dropdown__placeholder {
+  color: var(--text-muted);
+}
+
+
+.site-dropdown__trigger lucide-icon {
+  color: var(--text-secondary);
+
+  transition: transform 0.2s ease;
+}
+
+
+.site-dropdown__arrow--open {
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   SITE DROPDOWN MENU
+   ========================================================= */
+
+.site-dropdown__menu {
+  position: absolute;
+
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  z-index: 20;
+
+  max-height: 220px;
+
+  overflow-y: auto;
+
+  padding: 5px;
+
+  border: 1px solid var(--border-primary);
+  border-radius: 9px;
+
+  background: var(--surface-secondary);
+
+  box-shadow: var(--shadow-md);
+}
+
+
+.site-dropdown__option {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 11px;
+
+  border: 0;
+  border-radius: 6px;
+
+  color: var(--text-primary);
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.site-dropdown__option:hover {
+  background: var(--bg-tertiary);
+}
+
+
+.site-dropdown__option--selected {
+  color: var(--color-primary);
+
+  background: var(--color-primary-light);
+}
+
+
+.site-dropdown__option lucide-icon {
+  color: var(--color-primary);
+}
+
+
+.site-dropdown__empty {
+  padding: 12px;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+  text-align: center;
+}
+
+
+.form-field__hint {
+  margin: 7px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.manager-edit-dialog__actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 12px;
+
+  padding-top: 4px;
+}
+
+
+.manager-edit-dialog__cancel,
+.manager-edit-dialog__submit {
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.manager-edit-dialog__cancel {
+  border: 1px solid var(--border-primary);
+
+  color: var(--text-primary);
+  background: transparent;
+}
+
+
+.manager-edit-dialog__cancel:hover {
+  background: var(--bg-tertiary);
+}
+
+
+.manager-edit-dialog__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 0;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  transition: background-color 0.2s ease;
+}
+
+
+.manager-edit-dialog__submit:hover {
+  background: var(--color-primary-hover);
+}
+
+
+/* =========================================================
+   DISABLED
+   ========================================================= */
+
+.manager-edit-dialog__submit:disabled,
+.manager-edit-dialog__cancel:disabled,
+.manager-edit-dialog__close:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   BUTTON SPINNER
+   ========================================================= */
+
+.button-spinner {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgb(255 255 255 / 35%);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .manager-edit-dialog__backdrop {
+    padding: 14px;
+  }
+
+  .manager-edit-dialog__body {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+
+    padding: 20px;
+  }
+
+  .manager-edit-dialog__header {
+    padding: 20px;
+  }
+
+  .manager-edit-dialog__actions {
+    grid-column: 1;
+  }
+}

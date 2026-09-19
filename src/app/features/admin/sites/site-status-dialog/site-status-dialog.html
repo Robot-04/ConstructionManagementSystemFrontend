@@ -1,0 +1,172 @@
+<div
+  class="site-status-dialog__backdrop"
+  (click)="close()"
+>
+  <section
+    class="site-status-dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'site-status-title'"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <header class="site-status-dialog__header">
+
+      <div
+        class="site-status-dialog__icon"
+        [class.site-status-dialog__icon--restore]="!isActive"
+      >
+        @if (isActive) {
+          <lucide-icon
+            [img]="Power"
+            [size]="22"
+          />
+        } @else {
+          <lucide-icon
+            [img]="RotateCcw"
+            [size]="22"
+          />
+        }
+      </div>
+
+      <div class="site-status-dialog__heading">
+        <h2 id="site-status-title">
+          {{ actionTitle }}
+        </h2>
+
+        <p>
+          Change site status
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="site-status-dialog__close"
+        aria-label="Close dialog"
+        [disabled]="isSaving"
+        (click)="close()"
+      >
+        <lucide-icon
+          [img]="X"
+          [size]="20"
+        />
+      </button>
+
+    </header>
+
+
+    <!-- Body -->
+    <div class="site-status-dialog__body">
+
+      <p class="site-status-dialog__description">
+        {{ description }}
+      </p>
+
+
+      <!-- Assigned Manager Warning -->
+      @if (isActive && hasManager) {
+
+        <div class="site-status-dialog__warning">
+
+          <div class="site-status-dialog__warning-icon">
+            <lucide-icon
+              [img]="AlertTriangle"
+              [size]="20"
+            />
+          </div>
+
+          <div class="site-status-dialog__warning-content">
+
+            <strong>
+              Cannot deactivate this site
+            </strong>
+
+            <p>
+              A manager is currently assigned to this site.
+              Please unassign the manager before deactivating it.
+            </p>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- API Error -->
+      @if (errorMessage) {
+
+        <div class="site-status-dialog__error">
+
+          <lucide-icon
+            [img]="AlertTriangle"
+            [size]="18"
+          />
+
+          <span>
+            {{ errorMessage }}
+          </span>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="site-status-dialog__footer">
+
+      <button
+        type="button"
+        class="site-status-dialog__button site-status-dialog__button--cancel"
+        [disabled]="isSaving"
+        (click)="close()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="site-status-dialog__button"
+        [class.site-status-dialog__button--danger]="isActive"
+        [class.site-status-dialog__button--primary]="!isActive"
+        [disabled]="isSaving || (isActive && hasManager)"
+        (click)="confirmStatusChange()"
+      >
+
+        @if (isSaving) {
+
+          <span class="site-status-dialog__spinner"></span>
+
+          <span>
+            {{ isActive ? 'Deactivating...' : 'Restoring...' }}
+          </span>
+
+        } @else {
+
+          @if (isActive) {
+            <lucide-icon
+              [img]="Power"
+              [size]="17"
+            />
+          } @else {
+            <lucide-icon
+              [img]="RotateCcw"
+              [size]="17"
+            />
+          }
+
+          <span>
+            {{ actionText }}
+          </span>
+
+        }
+
+      </button>
+
+    </footer>
+
+  </section>
+</div>
